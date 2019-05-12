@@ -6,16 +6,17 @@ use Validator;
 use Illuminate\Contracts\Validation\Validator as ValidatorMessages;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+	protected $nameClass;
 
 	public function __construct($requireAuth=true)
 	{
@@ -28,12 +29,11 @@ class Controller extends BaseController
 			$this->middleware('auth');
 
 		if(property_exists($this, 'class')){
-			$name =  strtolower(last(explode('\\',basename($this->class))));
-			//dd($name);
-			$this->middleware('permission:'.$name.'-index',  ['only' => ['index']]);
-			$this->middleware('permission:'.$name.'-create', ['only' => ['create', 'store']]);
-			$this->middleware('permission:'.$name.'-edit',   ['only' => ['edit', 'update']]);
-			$this->middleware('permission:'.$name.'-delete', ['only' => ['destroy']]);
+			$this->nameClass =  strtolower(last(explode('\\',basename($this->class))));
+			$this->middleware('permission:'.$this->nameClass.'-index',  ['only' => ['index']]);
+			$this->middleware('permission:'.$this->nameClass.'-create', ['only' => ['create', 'store']]);
+			$this->middleware('permission:'.$this->nameClass.'-edit',   ['only' => ['edit', 'update']]);
+			$this->middleware('permission:'.$this->nameClass.'-delete', ['only' => ['destroy']]);
 		}
 	}
 
