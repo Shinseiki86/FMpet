@@ -20,7 +20,7 @@ alias art:cac="php artisan cache:clear"
 alias art:vc="php artisan view:clear"
 alias art:rc="php artisan route:clear"
 alias art:opt="php artisan optimize"
-alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear"
+alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear && composer dump"
 
 
 # Git

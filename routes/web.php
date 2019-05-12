@@ -59,6 +59,8 @@ Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace
 	Route::get('getDepartamentos', 'DepartamentoController@getData');
 	Route::resource('ciudades', 'CiudadController', ['parameters'=>['ciudad'=>'CIUD_ID']]);
 	Route::get('getCiudades', 'CiudadController@getData');
+	Route::resource('barrios', 'BarrioController', ['parameters'=>['barrio'=>'BARR_ID']]);
+	Route::get('getBarrios', 'BarrioController@getData');
 });
 
 

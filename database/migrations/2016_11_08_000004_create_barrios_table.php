@@ -4,10 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCiudadesTable extends Migration
+class CreateBarriosTable extends Migration
 {
     
-    private $nomTabla = 'CIUDADES';
+    private $nomTabla = 'BARRIOS';
 
     /**
      * Run the migrations.
@@ -16,40 +16,44 @@ class CreateCiudadesTable extends Migration
      */
     public function up()
     {
-        $commentTabla = 'CIUDADES: contiene las ciudades del territorio nacional';
+        $commentTabla = 'BARRIOS: contiene los barrios del territorio nacional';
 
         echo '- Creando tabla '.$this->nomTabla.'...' . PHP_EOL;
         Schema::create($this->nomTabla, function (Blueprint $table) {
-            $table->increments('CIUD_ID')
-                ->comment('Valor autonumérico, llave primaria de la tabla departamentos.');
+            $table->increments('BARR_ID')
+                ->comment('Valor autonumérico, llave primaria de la tabla barrios.');
 
-            $table->unsignedInteger('CIUD_CODIGO')
-                ->comment('codigo del departamento de acuerdo a clasificación DANE');
+            $table->string('BARR_CODIGO', 6)
+                ->comment('codigo del barrio de acuerdo a clasificación DANE');
 
-            $table->unsignedInteger('DEPA_ID')
-                ->comment('Llave foranea con DEPARTAMENTOS');
+            $table->string('BARR_NOMBRE', 300)
+                ->comment('Nombre del barrio');
 
-            $table->string('CIUD_NOMBRE', 300)
-                ->comment('Nombre de la ciudad');
+            $table->unsignedTinyInteger('BARR_ESTRATO')->nullable()
+                ->comment('Estrato socioeconómico');
+
+            $table->unsignedInteger('CIUD_ID')
+                ->comment('Llave foranea con CIUDADES');
+
             
             //Traza
-            $table->string('CIUD_CREADOPOR')
+            $table->string('BARR_CREADOPOR')
                 ->comment('Usuario que creó el registro en la tabla');
-            $table->timestamp('CIUD_FECHACREADO')
+            $table->timestamp('BARR_FECHACREADO')
                 ->comment('Fecha en que se creó el registro en la tabla.');
-            $table->string('CIUD_MODIFICADOPOR')->nullable()
+            $table->string('BARR_MODIFICADOPOR')->nullable()
                 ->comment('Usuario que realizó la última modificación del registro en la tabla.');
-            $table->timestamp('CIUD_FECHAMODIFICADO')->nullable()
+            $table->timestamp('BARR_FECHAMODIFICADO')->nullable()
                 ->comment('Fecha de la última modificación del registro en la tabla.');
-            $table->string('CIUD_ELIMINADOPOR')->nullable()
+            $table->string('BARR_ELIMINADOPOR')->nullable()
                 ->comment('Usuario que eliminó el registro en la tabla.');
-            $table->timestamp('CIUD_FECHAELIMINADO')->nullable()
+            $table->timestamp('BARR_FECHAELIMINADO')->nullable()
                 ->comment('Fecha en que se eliminó el registro en la tabla.');
 
             //Relación con tabla DEPARTAMENTOS
-            $table->foreign('DEPA_ID')
-                ->references('DEPA_ID')
-                ->on('DEPARTAMENTOS')
+            $table->foreign('CIUD_ID')
+                ->references('CIUD_ID')
+                ->on('CIUDADES')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

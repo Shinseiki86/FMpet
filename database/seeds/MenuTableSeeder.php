@@ -87,6 +87,14 @@ class MenuTableSeeder extends Seeder
                     'MENU_ORDER' => $orderItem2++,
                     'PERM_ID' => $this->getPermission('ciudad-index'),
                 ]);
+                Menu::create([
+                    'MENU_LABEL' => 'Barrios',
+                    'MENU_URL' => 'cnfg-geograficos/barrios',
+                    'MENU_ICON' => 'fas fa-map-marker-alt',
+                    'MENU_PARENT' => $parent2->MENU_ID,
+                    'MENU_ORDER' => $orderItem2++,
+                    'PERM_ID' => $this->getPermission('barrio-index'),
+                ]);
 
             Menu::create([
                 'MENU_LABEL' => 'Menú',

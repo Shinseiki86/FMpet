@@ -39,4 +39,9 @@ class Ciudad extends ModelWithSoftDeletes
 		return $this->belongsTo(Departamento::class, $foreingKey);
 	}
 
+	public function barrios()
+	{
+		$foreingKey = 'CIUD_ID';
+		return $this->hasMany(Barrio::class, $foreingKey);
+	}
 }
