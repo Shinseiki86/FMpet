@@ -175,7 +175,7 @@ use App\Models\Permission;
 
         private function createPermissions($name, $display_name, $description = null, $attachAdmin=true, $attachGestHum=true)
         {
-            $name = strtolower(basename(get_model($name)));
+            $name = strtolower(last(explode('\\',basename(get_model($name)))));
 
             if($description == null)
                 $description = $display_name;
