@@ -106,7 +106,7 @@ class MenuTableSeeder extends Seeder
                 'PERM_ID' => $this->getPermission('app-menu'),
             ]);
             Menu::create([
-                'MENU_LABEL' => 'Carga másiva',
+                'MENU_LABEL' => 'Carga masiva',
                 'MENU_URL' => 'app/upload',
                 'MENU_ICON' => 'fas fa-cog',
                 'MENU_PARENT' => $parent->MENU_ID,
@@ -114,21 +114,21 @@ class MenuTableSeeder extends Seeder
                 'PERM_ID' => $this->getPermission('app-upload'),
             ]);
             Menu::create([
-                'MENU_LABEL' => 'Parametros del Sistema',
+                'MENU_LABEL' => 'Parámetros del Sistema',
                 'MENU_URL' => 'app/parametrosgenerales',
                 'MENU_ICON' => 'fas fa-bolt',
                 'MENU_PARENT' => $parent->MENU_ID,
                 'MENU_ORDER' => $orderItem++,
                 'PERM_ID' => $this->getPermission('app-parametrosgenerales'),
             ]);
-            Menu::create([
-                'MENU_LABEL' => 'Parametrizaciones generales',
+            /*Menu::create([
+                'MENU_LABEL' => 'Parámetros generales',
                 'MENU_URL' => 'app/parameters',
                 'MENU_ICON' => 'fas fa-cog',
                 'MENU_PARENT' => $parent->MENU_ID,
                 'MENU_ORDER' => $orderItem++,
                 'PERM_ID' => $this->getPermission('app-parameters'),
-           ]);
+           ]);*/
 
         $orderItem = 0;
         $parent = Menu::create([
@@ -142,12 +142,20 @@ class MenuTableSeeder extends Seeder
 		
     //TOP
         Menu::create([
-            'MENU_LABEL' => 'Tickets',
-            'MENU_URL' => 'cnfg-tickets/tickets',
-            'MENU_ICON' => 'fas fa-id-badge',
+            'MENU_LABEL' => 'Google',
+            'MENU_URL' => 'http://www.google.com',
+            'MENU_ICON' => 'fab fa-google',
             'MENU_ORDER' => $orderMenuTop++,
             'MENU_POSITION' => 'TOP',
-            'PERM_ID' => $this->getPermission('ticket-index'),
+            'PERM_ID' => null,
+        ]);
+        Menu::create([
+            'MENU_LABEL' => 'Facebook',
+            'MENU_URL' => 'http://www.facebook.com',
+            'MENU_ICON' => 'fab fa-facebook',
+            'MENU_ORDER' => $orderMenuTop++,
+            'MENU_POSITION' => 'TOP',
+            'PERM_ID' => null,
         ]);
 
     }

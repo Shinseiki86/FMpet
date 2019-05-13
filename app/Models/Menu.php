@@ -31,7 +31,7 @@ class Menu extends ModelWithSoftDeletes
 
 	public static function rules(){
 		$rules = [
-			'MENU_LABEL'  => ['required', 'max:20', ],//'unique:MENUS,MENU_LABEL,'.$this->getKey().',MENU_ID'],
+			'MENU_LABEL'  => ['required', 'max:30', ],//'unique:MENUS,MENU_LABEL,'.$this->getKey().',MENU_ID'],
 			'MENU_URL'    => ['max:300', ],//'unique:MENUS,MENU_URL,'.$this->getKey().',MENU_ID'],
 			'MENU_ICON'   => ['string', 'max:300'],
 		];

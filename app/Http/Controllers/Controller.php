@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+	use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
 	protected $nameClass;
 
@@ -89,7 +89,7 @@ class Controller extends BaseController
 
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data);
-		
+
 		if($validator->passes()){
 			$class = get_model($this->class);
 
@@ -97,12 +97,15 @@ class Controller extends BaseController
 			if(array_has($data, 'password'))
 				$data['password'] = bcrypt($data['password']);
 			$model = $class::create($data);
+			$model = $this->postCreateOrUpdate($model);
+			$model->save();
+
 			//Se crean las relaciones
 			$this->storeRelations($model, $relations);
 
-			$nameClass = str_upperspace(class_basename($model));
+			$this->nameClassClass = str_upperspace(class_basename($model));
 			// redirecciona al index de controlador
-			flash_alert( $nameClass.' '.$model->id.' creado exitosamente.', 'success' );
+			flash_alert( $this->nameClassClass.' '.$model->id.' creado exitosamente.', 'success' );
 			return redirect()->route($this->route.'.index')->send();
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput()->send();
@@ -130,19 +133,35 @@ class Controller extends BaseController
 			// Se obtiene el registro
 			$model = $class::findOrFail($id);
 			//y se actualiza con los datos recibidos.
-			$model->update($data);
+			$model->fill($data);
+			$model = $this->postCreateOrUpdate($model);
+			$model->save();
 
 			//Se crean las relaciones
 			$this->storeRelations($model, $relations);
 
-			$nameClass = str_upperspace(class_basename($model));
+			$this->nameClassClass = str_upperspace(class_basename($model));
 			// redirecciona al index de controlador
-			flash_alert( $nameClass.' '.$id.' modificado exitosamente.', 'success' );
+			flash_alert( $this->nameClassClass.' '.$id.' modificado exitosamente.', 'success' );
 			return redirect()->route($this->route.'.index')->send();
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput()->send();
 		}
 	}
+
+
+	/**
+	 * Funcion para sobrecarga y realizar funciones adicionales al crear o modificar el modelo.
+	 * Ej: Procesar archivos.
+	 *
+	 * @param  Model $model
+	 * @return Model $model
+	 */
+	protected function postCreateOrUpdate($model)
+	{
+		return $model;
+	}
+
 
 	/**
 	 * Obtiene los datos recibidos por request, convierte a mayúsculas y elimina los input vacíos
@@ -161,12 +180,16 @@ class Controller extends BaseController
 		foreach ($data as $input => $value) {
 			if($value=='')
 				$data[$input] = null;
+			elseif($value instanceof \Illuminate\Http\UploadedFile)
+				$data[$input] = $value;
+				//$this->hasFile = true;
 			else {
 				$data[$input] = ($exceptions || ($input == '_token') || is_array($value))
 					? $value
 					: mb_strtoupper($value);
 			}
 		};
+		
 		return $data;
 	}
 
@@ -232,7 +255,6 @@ class Controller extends BaseController
 		return redirect()->route($this->route.'.index')->send();
 	}
 
-
 	protected function validateRelations($nameClass, $relations)
 	{
 		$hasRelations = false;
@@ -251,50 +273,46 @@ class Controller extends BaseController
 		return $hasRelations;
 	}
 
+	protected function buttonShow($model)
+	{
+		if(\Entrust::can([$this->nameClass.'-edit']))
+			return $this->button($model, 'show', 'Ver', 'default', 'fas fa-eye');
+	}
 
-	protected function button($row, $model, $route, $title, $class, $icon)
+	protected function buttonEdit($model)
+	{
+		if(\Entrust::can([$this->nameClass.'-edit']))
+			return $this->button($model, 'edit', 'Editar', 'info', 'fas fa-edit');
+		return '';
+	}
+
+	protected function button($model, $route, $title, $class, $icon)
 	{
 		if(!\Route::has($route))
 			$route = $this->route.'.'.$route;
 
-		$keyname = $model->getKeyName();
-		return \Html::link(route($route, [ $keyname => $row->$keyname ]), '<i class="'.$icon.' fa-fw" aria-hidden="true"></i>', [
+		return \Html::link(route($route, [ $model->getKeyName() => $model->getKey() ]), '<i class="'.$icon.' fa-fw" aria-hidden="true"></i>', [
 			'class'=>'btn btn-xs btn-'.$class,
 			'title'=>$title,
 			'data-tooltip'=>'tooltip'
 		],null,false);
 	}
 
-
-	protected function buttonShow($row, $model)
+	protected function buttonDelete($model, $modelDescrip)
 	{
-		return $this->button($row, $model, 'show', 'Ver', 'default', 'fas fa-eye');
-	}
-
-
-	protected function buttonEdit($row, $model)
-	{
-		return $this->button($row, $model, 'edit', 'Editar', 'info', 'fas fa-edit');
-	}
-
-
-	protected function buttonDelete($row, $model, $modelDescrip)
-	{
-		if(\Entrust::hasRole(['owner', 'admin']))
-			$keyname = $model->getKeyName();
+		if(\Entrust::can([$this->nameClass.'-delete']))
 			return \Form::button('<i class="fas fa-trash-alt fa-fw" aria-hidden="true"></i>',[
 				'class'=>'btn btn-xs btn-danger btn-delete',
 				'data-toggle'=>'modal',
-				'data-id'=> $row->$keyname,
+				'data-id'=> $model->getKey(),
 				'data-modelo'=> str_upperspace(class_basename($model)),
-				'data-descripcion'=> $row->$modelDescrip,
-				'data-action'=> route( $this->route.'.destroy', [ $keyname => $row->$keyname ]),
+				'data-descripcion'=> $model->$modelDescrip,
+				'data-action'=> route( $this->route.'.destroy', [ $model->getKeyName() => $model->getKey() ]),
 				'data-target'=>'#pregModalDelete',
 				'data-tooltip'=>'tooltip',
 				'title'=>'Borrar',
 			]);
 		return '';
 	}
-
 
 }

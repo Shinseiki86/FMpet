@@ -23,7 +23,7 @@ class CreateMenuTable extends Migration
             $table->increments('MENU_ID')
                 ->comment('Valor autonumérico, llave primaria de la tabla '.$this->nomTabla.'.');
 
-            $table->string('MENU_LABEL',300)->comment('');
+            $table->string('MENU_LABEL',30)->comment('');
             $table->string('MENU_URL',300)->nullable()->comment('');
             $table->string('MENU_ICON',300)->nullable()->comment('');
             $table->unsignedInteger('MENU_PARENT')->default(0)->comment('');
