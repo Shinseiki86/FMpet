@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ Ciudad Editar')
 
 @section('page_heading', 'Actualizar Ciudad')
 

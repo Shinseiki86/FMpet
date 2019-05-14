@@ -64,3 +64,9 @@ Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace
 });
 
 
+Route::group(['prefix'=>'core', 'as'=>'Core.', 'namespace'=>'Core'], function() {
+	Route::resource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
+	Route::get('getMascotas', 'MascotaController@getData');
+});
+
+

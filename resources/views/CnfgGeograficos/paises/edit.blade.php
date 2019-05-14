@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ País Editar')
 
 @section('page_heading', 'Actualizar País')
 

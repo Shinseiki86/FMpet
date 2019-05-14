@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ País Crear')
 
 @section('page_heading', 'Nuevo País')
 

@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ Departamento Crear')
 
 @section('page_heading', 'Nuevo Departamento')
 

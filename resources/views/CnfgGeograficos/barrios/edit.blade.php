@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ Barrio Editar')
 
 @section('page_heading', 'Actualizar Barrio')
 

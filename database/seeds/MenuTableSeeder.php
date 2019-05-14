@@ -142,20 +142,12 @@ class MenuTableSeeder extends Seeder
 		
     //TOP
         Menu::create([
-            'MENU_LABEL' => 'Google',
-            'MENU_URL' => 'http://www.google.com',
-            'MENU_ICON' => 'fab fa-google',
+            'MENU_LABEL' => 'Mascotas',
+            'MENU_URL' => 'core/mascotas',
+            'MENU_ICON' => 'fas fa-paw',
             'MENU_ORDER' => $orderMenuTop++,
             'MENU_POSITION' => 'TOP',
-            'PERM_ID' => null,
-        ]);
-        Menu::create([
-            'MENU_LABEL' => 'Facebook',
-            'MENU_URL' => 'http://www.facebook.com',
-            'MENU_ICON' => 'fab fa-facebook',
-            'MENU_ORDER' => $orderMenuTop++,
-            'MENU_POSITION' => 'TOP',
-            'PERM_ID' => null,
+            'PERM_ID' => $this->getPermission('mascotas'),
         ]);
 
     }

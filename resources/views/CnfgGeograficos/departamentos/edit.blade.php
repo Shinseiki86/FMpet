@@ -1,4 +1,5 @@
 @extends('layouts.menu')
+@section('title', '/ Departamento Editar')
 
 @section('page_heading', 'Actualizar Departamento')
 

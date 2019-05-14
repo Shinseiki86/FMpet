@@ -102,7 +102,7 @@ use App\Models\Permission;
                 $this->createPermissions(Ciudad::class, 'ciudades', null, true, false);
                 $this->createPermissions(Barrio::class, 'barrios', null, true, false);
 
-                //$this->createPermissions(Prospecto::class, 'hojas de vida');
+                $this->createPermissions(Mascota::class, 'mascotas', null, true, false);
                 
             //*********************************************************************
             $this->command->info('--- Seeder Creación de Usuarios prueba');
