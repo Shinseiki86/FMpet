@@ -59,7 +59,7 @@ class ReportController extends Controller
 	public function getData($controller, $action)
 	{
 		$controller = '\App\Http\Controllers\Report\Rpt'.$controller.'Controller';
-		$controler = new $controller;
+		//$controler = new $controller;
 		return app($controller)->$action();
 	}
 

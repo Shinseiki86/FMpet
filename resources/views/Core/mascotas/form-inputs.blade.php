@@ -8,6 +8,6 @@
 	@include('widgets.forms.input', ['type'=>'select', 'column'=>12, 'name'=>'PERS_ID', 'label'=>'Dueño', 'data'=>$arrPersonas])
 
 	<!-- Botones -->
-	@include('widgets.forms.buttons', ['url' => 'CnfgGeograficos/mascotas'])
+	@include('widgets.forms.buttons', ['url' => 'core/mascotas'])
 
 </div>

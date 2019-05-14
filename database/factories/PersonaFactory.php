@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 $factory->define(App\Models\Persona::class, function (Faker $faker) {
     return [
-        'PERS_NUMEROIDENTIFICACION' => $faker->ean8,
+        'PERS_NUMEROIDENTIFICACION' => $faker->unique()->ean8,
         'PERS_NOMBRE'               => $faker->firstName,
         'PERS_APELLIDO'             => $faker->lastName,
         'PERS_TELEFONO'             => $faker->numberBetween($min = 3100000000, $max = 3209999999) ,

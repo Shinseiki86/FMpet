@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Core;
 use App\Http\Controllers\Controller;
 use DataTables;
 
-use App\Models\Mascota;
 use App\Models\Persona;
+use App\Models\Mascota;
 
-class MascotaController extends Controller
+class PersonaController extends Controller
 {
-	protected $route = 'Core.mascotas';
-	protected $class = Mascota::class;
+	protected $route = 'Core.personas';
+	protected $class = Persona::class;
 
 	public function __construct()
 	{
@@ -43,23 +43,27 @@ class MascotaController extends Controller
 			], 'PERS_NOMBREAPELLIDO'
 		);
 
-		$query = Mascota::leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'MASCOTAS.PERS_ID')//with(['persona:PERS_ID,PERS_NOMBRE,PERS_APELLIDO'])
+		$query = Persona::with('mascotas')
 			->select([
-				'MASC_ID',
-				'MASC_NOMBRE',
-				'MASC_EDAD',
+				'PERS_ID',
+				'PERS_NUMEROIDENTIFICACION',
 				$PERS_NOMBREAPELLIDO,
-				'MASC_CREADOPOR',
+				'PERS_TELEFONO',
+				'PERS_DIRECCION',
+				'PERS_CORREO',
+				'PERS_CREADOPOR',
 			]);
 
 		return Datatables::eloquent($query)
+            ->addColumn('count_mascotas', function(Persona $pers) {
+                return $pers->mascotas->count();
+            })
 			->filterColumn('PERS_NOMBREAPELLIDO', function($query, $keyword){
-				$query->leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'MASCOTAS.PERS_ID')
-					->where(expression_concat(['PERS_NOMBRE','PERS_APELLIDO']),'like','%'.mb_strtoupper($keyword).'%');
+				$query->where(expression_concat(['PERS_NOMBRE','PERS_APELLIDO']),'like','%'.mb_strtoupper($keyword).'%');
 			})
 			->addColumn('action', function($row) use ($model) {
 				return parent::buttonEdit($row, $model).
-					parent::buttonDelete($row, $model, 'MASC_NOMBRE');
+					parent::buttonDelete($row, $model, 'PERS_NUMEROIDENTIFICACION');
 			}, false)->make(true);
 	}
 
@@ -87,46 +91,46 @@ class MascotaController extends Controller
 	/**
 	 * Muestra el formulario para editar un registro en particular.
 	 *
-	 * @param  int  $MASC_ID
+	 * @param  int  $PERS_ID
 	 * @return Response
 	 */
-	public function edit($MASC_ID)
+	public function edit($PERS_ID)
 	{
 		// Se obtiene el registro
-		$mascota = Mascota::findOrFail($MASC_ID);
+		$persona = Persona::findOrFail($PERS_ID);
 
 		// Muestra el formulario de edición y pasa el registro a editar
-		return view($this->route.'.edit', compact('mascota')+$this->getParameters());
+		return view($this->route.'.edit', compact('persona')+$this->getParameters());
 	}
 
 
 	/**
 	 * Actualiza un registro en la base de datos.
 	 *
-	 * @param  int  $MASC_ID
+	 * @param  int  $PERS_ID
 	 * @return Response
 	 */
-	public function update($MASC_ID)
+	public function update($PERS_ID)
 	{
-		parent::updateModel($MASC_ID);
+		parent::updateModel($PERS_ID);
 	}
 
 	/**
 	 * Elimina un registro de la base de datos.
 	 *
-	 * @param  int  $MASC_ID
+	 * @param  int  $PERS_ID
 	 * @return Response
 	 */
-	public function destroy($MASC_ID)
+	public function destroy($PERS_ID)
 	{
-		parent::destroyModel($MASC_ID);
+		parent::destroyModel($PERS_ID);
 	}
 
 
 	/**
 	 * Se obtienen variables que se requieren para construir el formulario (Listas para selects)
 	 *
-	 * @param  int  $MASC_ID
+	 * @param  int  $PERS_ID
 	 * @return Response
 	 */
 	private function getParameters($value='')

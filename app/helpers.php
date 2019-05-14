@@ -26,17 +26,16 @@ if (! function_exists('expression_concat')) {
      * @param  string  $primaryKey
      * @return array
      */
-    function expression_concat($columns = [], $alias = 'concat', $table = null)
+    function expression_concat($columns = [], $alias = null, $table = null)
     {
         if(config('database.default') == 'pgsql'){
             foreach ($columns as $key => $column) {
                 $columns[$key] = (isset($table) ? '"'.$table.'".' : '').'"'.$column.'"';
             }
-            $alias = '"'.$alias.'"';
+            if(isset($alias)){$alias = '"'.$alias.'"';};
         }
-        
-        $sqlIni = 'CONCAT_WS(\' \',';
-        $sqlEnd = ') AS '.$alias;
+        $sqlIni = 'UPPER(CONCAT_WS(\' \',';
+        $sqlEnd = isset($alias) ? ')) AS '.$alias : '))';
         $sqlColumns = null;
         foreach ($columns as $column) {
             $sqlColumns = !isset($sqlColumns)

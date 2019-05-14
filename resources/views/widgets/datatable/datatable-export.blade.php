@@ -1,12 +1,10 @@
 @rinclude('datatable')
 
 @push('scripts')
+@rinclude('datatable-footer')
 <script type="text/javascript">
 	$(function () {
-		@rinclude('datatable-footer')
-
 		var tbIndex = $('#tabla').DataTable();
-
 		@rinclude('datatable-filters')
 	});
 </script>

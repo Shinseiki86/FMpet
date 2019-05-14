@@ -30,6 +30,12 @@ Route::group(['middleware'=>'auth'], function() {
 		return view('layouts.menu');
 	});
 	Route::get('getArrModel', 'Controller@ajax');
+	/* 	Idea para reemplazar las rutas de Json Datatable Ajax
+	Route::get('getDatatableJson/{namespace}/{controller}', function($namespace, $controller ){
+		$controller = '\App\Http\Controllers\\'.$namespace.'\\'.$controller.'Controller';
+		$app = app($controller);
+		return $app->callAction('getData', $parameters = request()->all());
+	});*/
 });
 
 Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
@@ -45,28 +51,28 @@ Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
 Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report'], function() {
 	Route::get('/', 'ReportController@index');
 	Route::get('/viewForm', 'ReportController@viewForm');
-	
 	Route::post('getData/{controller}/{action}', 'ReportController@getData');
 });
-
 /*************  Fin Routes del sistema  *************/
 
 
 Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace'=>'CnfgGeograficos'], function() {
 	Route::resource('paises', 'PaisController', ['parameters'=>['pais'=>'PAIS_ID']]);
-	Route::get('getPaises', 'PaisController@getData');
+		 Route::get('getPaises', 'PaisController@getData');
 	Route::resource('departamentos', 'DepartamentoController', ['parameters'=>['departamento'=>'DEPA_ID']]);
-	Route::get('getDepartamentos', 'DepartamentoController@getData');
+		 Route::get('getDepartamentos', 'DepartamentoController@getData');
 	Route::resource('ciudades', 'CiudadController', ['parameters'=>['ciudad'=>'CIUD_ID']]);
-	Route::get('getCiudades', 'CiudadController@getData');
+		 Route::get('getCiudades', 'CiudadController@getData');
 	Route::resource('barrios', 'BarrioController', ['parameters'=>['barrio'=>'BARR_ID']]);
-	Route::get('getBarrios', 'BarrioController@getData');
+		 Route::get('getBarrios', 'BarrioController@getData');
 });
 
 
 Route::group(['prefix'=>'core', 'as'=>'Core.', 'namespace'=>'Core'], function() {
 	Route::resource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
-	Route::get('getMascotas', 'MascotaController@getData');
+		 Route::get('getMascotas', 'MascotaController@getData');
+	Route::resource('personas', 'PersonaController', ['parameters'=>['persona'=>'PERS_ID']]);
+		 Route::get('getPersonas', 'PersonaController@getData');
 });
 
 

@@ -26,7 +26,7 @@ class Mascota extends ModelWithSoftDeletes
 	public static function rules($id = 0){
 		return $rules = [
 			'MASC_NOMBRE' => ['required','max:50'],
-			'MASC_EDAD'   => ['numeric','min:0|max:255'],
+			'MASC_EDAD'   => ['numeric','between:0,255'],
 		];
 	}
 

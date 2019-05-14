@@ -29,7 +29,7 @@ class Controller extends BaseController
 
 		if(property_exists($this, 'class')){
 			$this->nameClass =  strtolower(last(explode('\\',basename($this->class))));
-			$this->middleware('permission:'.$this->nameClass.'-index',  ['only' => ['index']]);
+			$this->middleware('permission:'.$this->nameClass.'-index',  ['only' => ['index', 'getData']]);
 			$this->middleware('permission:'.$this->nameClass.'-create', ['only' => ['create', 'store']]);
 			$this->middleware('permission:'.$this->nameClass.'-edit',   ['only' => ['edit', 'update']]);
 			$this->middleware('permission:'.$this->nameClass.'-delete', ['only' => ['destroy']]);

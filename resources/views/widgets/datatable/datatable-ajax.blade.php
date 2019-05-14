@@ -1,18 +1,25 @@
 @rinclude('datatable')
 
 @push('scripts')
+@rinclude('datatable-footer')
 <script type="text/javascript">
 	$(document).ready(function(){
-		@rinclude('datatable-footer')
-
+		
 		var tbIndex = $('#tabla').DataTable({
 			processing: true,
 			serverSide: true,
 			ajax: '{{$urlAjax}}',
 			columns: [
 			@foreach($columns as $col)
-				// ctype_upper permite excluir la columna que tenga minúsculas para no realizar búsquedas
-				{ data:'{{ array_last(explode('.', $col)) }}', name:'{{$col}}', searchable: {{ctype_upper(str_replace(['_','.'],'',$col))?'true':'false'}} },
+				@php
+					//ctype_upper permite excluir la columna que tenga minúsculas para no realizar búsquedas
+					$is_var = ctype_upper(str_replace(['_','.'],'',$col));
+				@endphp
+				{ data:'{{ array_last(explode('.', $col)) }}',
+				  name:'{{$col}}',
+				  searchable: {{ $is_var ? 'true' : 'false' }},
+				  orderable:  {{ $is_var ? 'true' : 'false' }}
+				},
 			@endforeach
 				{data:'action', orderable: false, searchable: false}
 			],

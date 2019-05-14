@@ -142,6 +142,15 @@ class MenuTableSeeder extends Seeder
 		
     //TOP
         Menu::create([
+            'MENU_LABEL' => 'Personas',
+            'MENU_URL' => 'core/personas',
+            'MENU_ICON' => 'fas fa-users',
+            'MENU_ORDER' => $orderMenuTop++,
+            'MENU_POSITION' => 'TOP',
+            'PERM_ID' => $this->getPermission('personas'),
+        ]);
+
+        Menu::create([
             'MENU_LABEL' => 'Mascotas',
             'MENU_URL' => 'core/mascotas',
             'MENU_ICON' => 'fas fa-paw',

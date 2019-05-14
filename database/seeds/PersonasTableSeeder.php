@@ -16,13 +16,13 @@ class PersonasTableSeeder extends Seeder {
 
         $personaTipos = PersonaTipo::all();
 
-        $personas = factory(Persona::class)->times(15)->make()
+        $personas = factory(Persona::class)->times(100)->make()
                         ->each(function ($persona) use ($personaTipos) {
                             $persona->personaTipo()->associate( $personaTipos->random() );
                             $persona->save();
                         });
 
-        $mascotas = factory(Mascota::class)->times(10)->make()
+        $mascotas = factory(Mascota::class)->times(100)->make()
                         ->each(function ($mascota) use ($personas) {
                             $mascota->persona()->associate( $personas->random() );
                             $mascota->save();

@@ -17,6 +17,8 @@ class Persona extends ModelWithSoftDeletes
 	const DELETED_AT = 'PERS_FECHAELIMINADO';
 	protected $dates = ['PERS_FECHACREADO', 'PERS_FECHAMODIFICADO', 'PERS_FECHAELIMINADO'];
 
+	//protected $appends = ['nombre_completo',];
+
 	protected $fillable = [
 		'PERS_NUMEROIDENTIFICACION',
 		'PERS_NOMBRE',
@@ -28,12 +30,12 @@ class Persona extends ModelWithSoftDeletes
 
 	public static function rules($id = 0){
 		return $rules = [
-			'PERS_CODIGO'   => ['required','numeric','digits:15',static::uniqueWith($id, ['PERS_CODIGO'])],
-			'PERS_NOMBRE'   => ['required','max:50'],
-			'PERS_APELLIDO' => ['required','max:50'],
-			'PERS_TELEFONO' => ['numeric','digits:15'],
-			'PERS_DIRECCION'=> ['string','max:20'],
-			'PERS_CORREO'   => ['email','max:320'],
+			'PERS_NUMEROIDENTIFICACION' => ['required','numeric','between:1,999999999999999',static::uniqueWith($id, ['PERS_CODIGO'])],
+			'PERS_NOMBRE'               => ['required','max:50'],
+			'PERS_APELLIDO'             => ['required','max:50'],
+			'PERS_TELEFONO'             => ['numeric','between:100000,999999999999999'],
+			'PERS_DIRECCION'            => ['string','max:100'],
+			'PERS_CORREO'               => ['email','max:320'],
 		];
 	}
 
@@ -48,5 +50,16 @@ class Persona extends ModelWithSoftDeletes
 		$foreingKey = 'PERS_ID';
 		return $this->hasMany(Mascota::class, $foreingKey);
 	}
+
+
+	/**
+	 * Retorna el nombre completo de la persona.
+	 *
+	 * @return string
+	 /
+	public function getNombreCompletoAttribute()
+	{
+    	return "{$this->PERS_NOMBRE} {$this->PERS_APELLIDO}";
+	}*/
 
 }
