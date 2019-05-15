@@ -32,9 +32,8 @@ class ReportController extends Controller
 						->select([
 							'*',
 							expression_concat(['code','name'], 'display',null,  ' - '),
-							expression_concat(['controller','action'], 'route',null, '_')
+							expression_concat(['controller','action'], 'route',null, '_', false)
 						])->get()->toArray();
-						//dd($arrReports);
 		return view('reports.index', compact('arrReports'));
 	}
 
