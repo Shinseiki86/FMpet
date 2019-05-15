@@ -31,8 +31,8 @@ class ReportController extends Controller
 						->whereIn('report_role.role_id',$roles->pluck('id'))
 						->select([
 							'*',
-							expression_concat(['code','name'], 'display', ' - '),
-							expression_concat(['controller','action'], 'route', '_')
+							expression_concat(['code','name'], 'display',null,  ' - '),
+							expression_concat(['controller','action'], 'route',null, '_')
 						])->get()->toArray();
 						//dd($arrReports);
 		return view('reports.index', compact('arrReports'));

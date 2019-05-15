@@ -43,6 +43,7 @@ Route::group(['middleware'=>'auth'], function() {
 	});*/
 });
 
+//Admn App
 Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
 	Route::resource('menu', 'MenuController', ['parameters'=>['menu'=>'MENU_ID']]);
 	Route::resource('parametersglobal', 'ParameterGlobalController', ['parameters'=>['parametersglobal'=>'PGLO__ID']]);
@@ -53,10 +54,11 @@ Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
 	Route::get('createFromAjax/{model}', 'ModelController@createFromAjax')->name('createFromAjax');
 });
 
+//Reportes
 Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report'], function() {
-	Route::get('/', 'ReportController@index');
-	Route::get('/viewForm', 'ReportController@viewForm');
-	Route::post('getData/{controller}/{action}', 'ReportController@getData');
+	Route::get('/', 'ReportController@index')->name('index');
+	Route::get('/viewForm', 'ReportController@viewForm')->name('viewForm');
+	Route::post('getData/{controller}/{action}', 'ReportController@getData')->name('getData');
 });
 /*************  Fin Routes del sistema  *************/
 

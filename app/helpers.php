@@ -26,7 +26,7 @@ if (! function_exists('expression_concat')) {
      * @param  string  $primaryKey
      * @return array
      */
-    function expression_concat($columns = [], $alias = null, $table = null)
+    function expression_concat($columns = [], $alias = null, $table = null, $glue=' ')
     {
         if(config('database.default') == 'pgsql'){
             foreach ($columns as $key => $column) {
@@ -34,7 +34,7 @@ if (! function_exists('expression_concat')) {
             }
             if(isset($alias)){$alias = '"'.$alias.'"';};
         }
-        $sqlIni = 'UPPER(CONCAT_WS(\' \',';
+        $sqlIni = 'UPPER(CONCAT_WS(\''.$glue.'\',';
         $sqlEnd = isset($alias) ? ')) AS '.$alias : '))';
         $sqlColumns = null;
         foreach ($columns as $column) {

@@ -133,10 +133,10 @@ class MenuTableSeeder extends Seeder
         $orderItem = 0;
         $parent = Menu::create([
             'MENU_LABEL' => 'Reportes',
-            'MENU_ICON' => 'fas fa-filter',
-            'MENU_URL' => 'reportes',
+            'MENU_ICON' => 'fas fa-chart-pie',
+            'MENU_URL' => 'reports',
             'MENU_ORDER' => $orderMenuLeft++,
-            'PERM_ID' => $this->getPermission('reportes'),
+            'PERM_ID' => $this->getPermission('report'),
         ]);
 
 		
