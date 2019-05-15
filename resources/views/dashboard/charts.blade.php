@@ -27,9 +27,9 @@
 
 			//función newChart para crear gráfico en los panelchart.
 			newChart(
-				'usuar/getContratosEmpleador',
-				'Personal Activo',
-				'EMPL_NOMBRECOMERCIAL',
+				'getDashboardUsuariosPorRol',
+				'Usuarios x Rol',
+				'Rol',
 				'count',
 				'chart1',
 				'bar'

@@ -23,6 +23,11 @@ Route::group(['prefix'=>'auth', 'as'=>'auth.', 'namespace'=>'Auth'], function() 
 	Route::resource('permisos', 'PermissionController');
 });
 
+//Dashboard
+Route::get('getDashboardUsuariosPorRol', 'Auth\RoleController@getUsuariosPorRol');
+
+
+//Página principal. Si el usuario es admin, se muestra el dashboard.
 Route::group(['middleware'=>'auth'], function() {
 	Route::get('/', function(){
 		if(Entrust::hasRole(['owner','admin','gesthum']))

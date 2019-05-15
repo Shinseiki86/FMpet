@@ -126,8 +126,8 @@ use App\Models\Permission;
                     'email' => 'owner@mail.com',
                     'password'  => \Hash::make($pass),
                 ]);
-                $owner->attachRole($this->rolOwner);
-
+                $owner->attachRoles([$this->rolAdmin, $this->rolOwner]);
+                
                 //Editores
                 $gesthum1 = User::create( [
                     'name' => 'Gestión humana 1 de prueba',
@@ -147,7 +147,7 @@ use App\Models\Permission;
                     'password'  => \Hash::make($pass),
                     'USER_CREADOPOR'  => 'PRUEBAS'
                 ]);
-                $super->attachRole($rolSuperOper);
+                $super->attachRoles([$rolSuperOper, $rolCoorOper, $rolEjecutivo]);
 
                 $coordi = User::create( [
                     'name' => 'Coordinador de prueba',

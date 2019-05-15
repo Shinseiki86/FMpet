@@ -1,14 +1,13 @@
 moment.locale('es');
 window.chart = [];
+window.chartData = [];
 
 $('.typeChart').on('change', function(ev) {
 	var idCanvas = $(this).closest('.panel-chart').find('.canvas-chart').attr('id');
 	var type = $(this).find(":selected").val();
-	console.log(idCanvas);
-	console.log(type);
 
 	var chart = window.chart[idCanvas];
-	var chartData = chart.config.data;
+	var chartData = window.chartData[idCanvas][type];
 	var opcs = getOptionsChart(type);
 	opcs.title.text = chart.config.options.title.text;
 	
@@ -47,23 +46,8 @@ function newChart($route, $title, $nameX, $nameY, $idCanvas, $type){
 }
 
 function buildChart($title, $labels, $data, $colors, $idCanvas, $type){
-	//if($data.length>0){
-		//Si $colors está vacío, se crea un arreglo de colores.
-		if($colors.length === 0){
-			$labels.forEach(function ($label, $index) {
-				$colors.push(getColor($index));
-			});
-		}
 
-		var chartData = {
-			labels: $labels,
-			datasets: [{
-				label: 'Registros',
-				backgroundColor: $colors,
-				data: $data,
-			}]
-		};
-
+		var chartData = getChartData($labels, $data, $colors, $idCanvas, $type);
 		var opcs = getOptionsChart($type);
 		opcs.title.text = $title;
 
@@ -243,7 +227,7 @@ var getOptionsChart = function ($type) {
 					fontSize: 20,
 					padding: 30
 				},
-				legend: {display: false}
+				legend: {position:'right'}
 			};
 		break;
 	
@@ -258,9 +242,7 @@ var getOptionsChart = function ($type) {
 				legend: {
 					position: 'left',
 					onClick: null,
-					labels: {
-						fontSize: 16
-					}
+					labels: {fontSize: 16}
 				},
 				animation: {
 					duration: 0,
@@ -270,6 +252,44 @@ var getOptionsChart = function ($type) {
 		break;
 	}
 }// Fin function getOptionsChart
+
+
+//Retorna json con las opcines para construir el gráfico según el tipo.
+var getChartData = function ($labels, $data, $colors, $idCanvas, $type){
+	var $datasets = [];
+	window.chartData[$idCanvas] = [];
+
+	$labels.forEach(function ($label, $index) {
+		$colors.push(getColor($index));
+		$datasets.push( {
+			label: $label,
+			backgroundColor: [$colors.length != 0 ? $colors[$index] : getColor($index)],
+			data: [$data[$index]]
+		});
+	});
+	
+	window.chartData[$idCanvas]['bar'] = {
+		labels:  [''],
+		datasets: $datasets
+	};
+	
+
+	if($colors.length === 0){
+		$labels.forEach(function ($label, $index) {
+			$colors.push(getColor($index));
+		});
+	}
+	window.chartData[$idCanvas]['pie'] = {
+		labels: $labels,
+		datasets: [{
+			backgroundColor: $colors,
+			data: $data,
+		}]
+	};
+
+	return window.chartData[$idCanvas][$type];
+}// Fin function getOptionsChart
+
 
 //Muestra mensaje cuando no hay datos para construir el gráfico.
 Chart.plugins.register({

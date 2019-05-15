@@ -107,4 +107,22 @@ class RoleController extends Controller
 		parent::destroyModel($id);
 	}
 	
+	/**
+	 * Dashboard: Cantidad de usuarios activos asignados a un rol.
+	 *
+	 * @return json
+	 */
+	public function getUsuariosPorRol()
+	{
+		$data = Role::join('role_user', 'role_user.user_id', '=', 'roles.id')
+			->select([
+				'display_name as Rol',
+				\DB::raw('COUNT("user_id") as count')
+			])
+			->groupBy('display_name')
+			//->orderBy('count', 'desc')
+			->get();
+		return $data->toJson();
+	}
+
 }
