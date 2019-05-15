@@ -23,7 +23,7 @@
 				<th class="col-md-4 all">Mascota</th>
 				<th class="col-md-1">Edad</th>
 				<th class="col-md-4 all">Dueño</th>
-				<th class="hidden-xs col-md-1">Creado</th>
+				<th class="col-md-1">Creado</th>
 				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>

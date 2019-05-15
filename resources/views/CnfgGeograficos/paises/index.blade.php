@@ -22,7 +22,7 @@
 				<th class="col-md-1">Código</th>
 				<th class="col-md-5">Nombre</th>
 				<th class="col-md-1">Departamentos</th>
-				<th class="hidden-xs col-md-1">Creado</th>
+				<th class="col-md-1">Creado</th>
 				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>

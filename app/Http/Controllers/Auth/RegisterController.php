@@ -108,7 +108,7 @@ class RegisterController extends Controller
     public function index()
     {
         //Se obtienen todos los registros.
-        $usuarios = User::all();
+        $usuarios = User::with('roles')->get();
         //Se carga la vista y se pasan los registros
         return view('auth/index', compact('usuarios'));
     }

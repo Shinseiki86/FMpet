@@ -22,29 +22,31 @@
 	<table class="table table-striped" id="tabla">
 		<thead>
 			<tr class="active">
-				<th class="col-xs-4 col-sm-4 col-md-4 col-lg-2">Nombre</th>
-				<th class="col-xs-2 col-sm-1 col-md-1 col-lg-1">Usuario</th>
-				<th class="col-xs-2 col-sm-1 col-md-1 col-lg-1">Cedula</th>
-				<th class="col-xs-2 col-sm-1 col-md-1 col-lg-1">Email</th>
-				<th class="col-xs-2 col-sm-1 col-md-1 col-lg-1">Roles</th>
-				<th class="hidden-xs col-sm-1 col-md-1 col-lg-1">Creado</th>
-				<th class="hidden-xs col-sm-1 col-md-1 col-lg-1">Modificado</th>
-				<th class="col-xs-1 all"></th>
+				<th class="col-md-4 all">Nombre</th>
+				<th class="col-md-1 all">Usuario</th>
+				<th class="col-md-1">Cedula</th>
+				<th class="col-md-2">Email</th>
+				<th class="col-md-1 all">Roles</th>
+				<th class="col-md-1">Creado</th>
+				<th class="col-md-1">Modificado</th>
+				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>
 		<tbody>
 
 			@foreach($usuarios as $usuario)
 			<tr>
-				<td>{{ $usuario -> name }}</td>
-				<td>{{ $usuario -> username }}</td>
-				<td>{{ $usuario -> cedula }}</td>
-				<td>{{ $usuario -> email }}</td>
-				<td>{{ $usuario -> roles ->implode('display_name', ',') }}</td>
-				<td class="hidden-xs">{{ $usuario -> USER_CREADOPOR }}</td>
-				<td class="hidden-xs">{{ $usuario -> USER_MODIFICADOPOR }}</td>
+				<td>{{ $usuario->name }}</td>
+				<td>{{ $usuario->username }}</td>
+				<td>{{ $usuario->cedula }}</td>
+				<td>{{ $usuario->email }}</td>
 				<td>
-
+					<i class="fas fa-address-card" aria-hidden="true" data-tooltip="tooltip" data-placement="bottom" data-container="body" title="{{ $usuario->roles->implode('display_name', ', ') }}"></i>
+					{{ $usuario->roles->count() }} 
+				</td>
+				<td>{{ $usuario->USER_CREADOPOR }}</td>
+				<td>{{ $usuario->USER_MODIFICADOPOR }}</td>
+				<td>
 					{{-- <!-- Botón Ver (show) -->
 					<a class="btn btn-success btn-xs" href="{{ URL::to('usuarios/'.$usuario->id) }}">
 						<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs">Ver</span>
@@ -78,7 +80,6 @@
 	                    'data-tooltip'=>'tooltip',
 	                    'title'=>'Borrar',
 	                ])}}
-
 				</td>
 			</tr>
 			@endforeach

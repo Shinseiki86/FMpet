@@ -19,13 +19,13 @@
 	<table class="table table-striped" id="tabla">
 		<thead>
 			<tr>
-				<th class="col-md-1"># Doc</th>
+				<th class="col-md-1 all"># Doc</th>
 				<th class="col-md-4 all">Nombre completo</th>
 				<th class="col-md-2">Teléfono</th>
-				<th class="col-md-4 all">Dirección</th>
-				<th class="col-md-4 all">Correo</th>
+				<th class="col-md-4">Dirección</th>
+				<th class="col-md-4">Correo</th>
 				<th class="col-md-1 all notFilter">Cant. Mascotas</th>
-				<th class="hidden-xs col-md-1">Creado</th>
+				<th class="col-md-1">Creado</th>
 				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>

@@ -23,12 +23,12 @@
 	<table class="table table-striped" id="tabla">
 		<thead>
 			<tr>
-				<th class="hidden-xs col-md-1">Código</th>
-				<th class="col-xs-3">Nombre</th>
-				<th class="col-xs-3">País</th>
-				<th class="col-xs-1 notFilter">Ciudades</th>
-				<th class="hidden-xs col-md-1">Creado</th>
-				<th class="col-xs-1 all notFilter"></th>
+				<th class="col-md-1">Código</th>
+				<th class="col-md-3">Nombre</th>
+				<th class="col-md-3">País</th>
+				<th class="col-md-1 notFilter">Ciudades</th>
+				<th class="col-md-1">Creado</th>
+				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>
 		<tbody></tbody>

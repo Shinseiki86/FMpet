@@ -20,12 +20,12 @@
 	<table class="table table-striped" id="tabla">
 		<thead>
 			<tr>
-				<th class="col-xs-1">Nombre</th>
-				<th class="col-xs-2">Display</th>
-				<th class="hidden-xs col-sm-1">Roles</th>
-				<th class="hidden-xs col-sm-2">Creado</th>
-				<th class="hidden-xs col-sm-2">Modificado</th>
-				<th class="col-xs-1 all"></th>
+				<th class="col-md-1">Nombre</th>
+				<th class="col-md-2 all">Display</th>
+				<th class="col-md-1">Roles</th>
+				<th class="col-md-2">Creado</th>
+				<th class="col-md-2">Modificado</th>
+				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>
 
@@ -33,9 +33,12 @@
 
 			@foreach($permisos as $permiso)
 			<tr>
-				<td>{{ $permiso -> name }}</td>
-				<td>{{ $permiso -> display_name }}</td>
-				<td>{{ $permiso -> roles -> count() }}</td>
+				<td>{{ $permiso->name }}</td>
+				<td>{{ $permiso->display_name }}</td>
+				<td>
+					<i class="fas fa-address-card" aria-hidden="true" data-tooltip="tooltip" data-placement="bottom" data-container="body" title="{{ $permiso->roles->implode('display_name', ', ') }}"></i>
+					{{ $permiso->roles->count() }} 
+				</td>
 				<td>{{ datetime($permiso->created_at, true) }}</td>
 				<td>{{ datetime($permiso->updated_at, true) }}</td>
 				<td>

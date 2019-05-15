@@ -24,7 +24,7 @@
 				<th class="col-md-1">Estrato</th>
 				{{-- <th class="col-md-1">Cod Ciudad</th> --}}
 				<th class="col-md-4 all">Ciudad</th>
-				<th class="hidden-xs col-md-1">Creado</th>
+				<th class="col-md-1">Creado</th>
 				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>

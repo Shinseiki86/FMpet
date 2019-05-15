@@ -20,12 +20,12 @@
 	<table class="table table-striped" id="tabla">
 		<thead>
 			<tr>
-				<th class="col-xs-1">Nombre</th>
-				<th class="col-xs-3">Display</th>
-				{{--<th class="col-xs-3">Permisos</th>--}}
-				<th class="hidden-xs col-sm-1">Creado</th>
-				<th class="hidden-xs col-sm-1">Modificado</th>
-				<th class="col-xs-1 all"></th>
+				<th class="col-md-1">Nombre</th>
+				<th class="col-md-3 all">Display</th>
+				<th class="col-md-1 all">Permisos</th>
+				<th class="col-md-1">Creado</th>
+				<th class="col-md-1">Modificado</th>
+				<th class="col-md-1 all notFilter"></th>
 			</tr>
 		</thead>
 
@@ -33,16 +33,17 @@
 
 			@foreach($roles as $rol)
 			<tr>
-				<td>{{ $rol -> name }}</td>
+				<td>{{ $rol->name }}</td>
 				<td>
-					{{ $rol -> display_name }}
+					{{ $rol->display_name }}
 					@if($rol->description)
-					<i class="fas fa-question-circle" aria-hidden="true" data-tooltip="tooltip" data-container="body" title="{{ $rol -> description }}"></i>
+					<i class="fas fa-question-circle" aria-hidden="true" data-tooltip="tooltip" data-container="body" title="{{ $rol->description }}"></i>
 					@endif
 				</td>
-				{{--<td>
-					<i class="fas fa-address-card" aria-hidden="true" data-tooltip="tooltip" data-placement="bottom" data-container="body" title="{{ $rol -> permissions ->implode('display_name', ', ') }}"></i>
-				</td>--}}
+				<td>
+					<i class="fas fa-address-card" aria-hidden="true" data-tooltip="tooltip" data-placement="bottom" data-container="body" title="{{ $rol->permissions->implode('display_name', ', ') }}"></i>
+					{{ $rol->permissions->count() }} 
+				</td>
 				<td>{{ datetime($rol->created_at, true) }}</td>
 				<td>{{ datetime($rol->updated_at, true) }}</td>
 				<td>

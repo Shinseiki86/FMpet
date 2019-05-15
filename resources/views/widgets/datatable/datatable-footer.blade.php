@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	var tfoot = $("#tabla thead tr").clone();
+	var tfoot = $('#tabla thead tr').clone();
 
 	tfoot.find('th').removeClass(function (index, className) {
 			return (className.match (/\bcol-\S+/g) || []).join(' ');

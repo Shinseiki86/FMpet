@@ -24,7 +24,7 @@ class RoleController extends Controller
 	public function index()
 	{
 		//Se obtienen todos los registros.
-		$roles = Role::all();
+		$roles = Role::with('permissions')->get();
 		//Se carga la vista y se pasan los registros
 		return view($this->route.'.index', compact('roles'));
 	}
