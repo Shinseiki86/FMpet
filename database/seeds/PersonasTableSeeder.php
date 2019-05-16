@@ -4,7 +4,6 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Persona;
 use App\Models\Mascota;
-
 use App\Models\PersonaTipo;
 
 class PersonasTableSeeder extends Seeder {

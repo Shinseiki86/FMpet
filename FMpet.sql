@@ -1,97 +1,27 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 10.7
--- Dumped by pg_dump version 10.7
-
--- Started on 2019-05-11 10:54:20
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 2915 (class 1262 OID 16397)
--- Name: FMPet; Type: DATABASE; Schema: -; Owner: postgres
---
-
-CREATE DATABASE "FMPet" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Spain.1252' LC_CTYPE = 'Spanish_Spain.1252';
-
-
-ALTER DATABASE "FMPet" OWNER TO postgres;
-
-\connect "FMPet"
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 1 (class 3079 OID 12924)
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2917 (class 0 OID 0)
--- Dependencies: 1
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- TOC entry 206 (class 1259 OID 16471)
+-- Name: publicacion; Type: TABLE; Schema: public; Owner: postgres
 --
 
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- TOC entry 202 (class 1259 OID 16447)
--- Name: barrio; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.barrio (
+CREATE TABLE public.publicacion (
     id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying,
-    id_ciudad integer NOT NULL
+    titulo character varying(50),
+    descripcion character varying(50),
+    latitud double precision,
+    longitud double precision,
+    id_persona integer NOT NULL,
+    id_mascota integer NOT NULL,
+    id_estado integer NOT NULL,
+    id_barrio integer NOT NULL,
+    id_tipopublicacion integer NOT NULL
 );
 
 
-ALTER TABLE public.barrio OWNER TO postgres;
-
---
--- TOC entry 199 (class 1259 OID 16429)
--- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.ciudad (
-    id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying,
-    id_departamento integer NOT NULL
-);
+ALTER TABLE public.publicacion OWNER TO postgres;
 
 
-ALTER TABLE public.ciudad OWNER TO postgres;
-
---
--- TOC entry 205 (class 1259 OID 16465)
--- Name: comentario; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.comentario (
     id integer NOT NULL,
@@ -102,32 +32,8 @@ CREATE TABLE public.comentario (
 
 ALTER TABLE public.comentario OWNER TO postgres;
 
---
--- TOC entry 201 (class 1259 OID 16441)
--- Name: departamento; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.departamento (
-    id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying,
-    id_pais integer NOT NULL
-);
-
-
-ALTER TABLE public.departamento OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 16453)
--- Name: estado; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.estado (
-    id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying
-);
-
-
-ALTER TABLE public.estado OWNER TO postgres;
 
 --
 -- TOC entry 209 (class 1259 OID 16488)
@@ -148,72 +54,7 @@ ALTER TABLE public.itempublicacioncomentarios OWNER TO postgres;
 --
 -- TOC entry 197 (class 1259 OID 16417)
 -- Name: mascota; Type: TABLE; Schema: public; Owner: postgres
---
 
-CREATE TABLE public.mascota (
-    id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying,
-    edad integer,
-    id_persona integer
-);
-
-
-ALTER TABLE public.mascota OWNER TO postgres;
-
---
--- TOC entry 200 (class 1259 OID 16435)
--- Name: pais; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.pais (
-    id integer NOT NULL,
-    nombre character varying(50) DEFAULT NULL::character varying
-);
-
-
-ALTER TABLE public.pais OWNER TO postgres;
-
---
--- TOC entry 196 (class 1259 OID 16398)
--- Name: persona; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.persona (
-    id integer NOT NULL,
-    numeroidentificacion integer,
-    nombre character varying(50),
-    apellido character varying(50),
-    telefono integer,
-    direccion character varying(20) DEFAULT NULL::character varying,
-    correo character varying(50) DEFAULT NULL::character varying,
-    id_tipopersona integer
-);
-
-
-ALTER TABLE public.persona OWNER TO postgres;
-
---
--- TOC entry 206 (class 1259 OID 16471)
--- Name: publicacion; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.publicacion (
-    id integer NOT NULL,
-    titulo character varying(50),
-    descripcion character varying(50),
-    latitud double precision,
-    longitud double precision,
-    "fechaRegistro" timestamp without time zone,
-    "fechaActualizacion" timestamp without time zone,
-    id_persona integer NOT NULL,
-    id_mascota integer NOT NULL,
-    id_estado integer NOT NULL,
-    id_barrio integer NOT NULL,
-    id_tipopublicacion integer NOT NULL
-);
-
-
-ALTER TABLE public.publicacion OWNER TO postgres;
 
 --
 -- TOC entry 207 (class 1259 OID 16476)

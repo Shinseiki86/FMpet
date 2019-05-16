@@ -159,6 +159,15 @@ class MenuTableSeeder extends Seeder
             'PERM_ID' => $this->getPermission('mascotas'),
         ]);
 
+        Menu::create([
+            'MENU_LABEL' => 'Publicaciones',
+            'MENU_URL' => 'core/publicaciones',
+            'MENU_ICON' => 'fas fa-newspaper',
+            'MENU_ORDER' => $orderMenuTop++,
+            'MENU_POSITION' => 'TOP',
+            'PERM_ID' => $this->getPermission('publicacion'),
+        ]);
+
     }
 
 	

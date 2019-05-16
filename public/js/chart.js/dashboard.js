@@ -227,7 +227,7 @@ var getOptionsChart = function ($type) {
 					fontSize: 20,
 					padding: 30
 				},
-				legend: {position:'right'}
+				legend: {position:'bottom'}
 			};
 		break;
 	
@@ -240,7 +240,7 @@ var getOptionsChart = function ($type) {
 					fontSize: 20
 				},
 				legend: {
-					position: 'left',
+					position: 'bottom',
 					onClick: null,
 					labels: {fontSize: 16}
 				},

@@ -80,6 +80,8 @@ Route::group(['prefix'=>'core', 'as'=>'Core.', 'namespace'=>'Core'], function() 
 		 Route::get('getMascotas', 'MascotaController@getData');
 	Route::resource('personas', 'PersonaController', ['parameters'=>['persona'=>'PERS_ID']]);
 		 Route::get('getPersonas', 'PersonaController@getData');
+	Route::resource('publicaciones', 'PublicacionController', ['parameters'=>['publicacion'=>'PUBL_ID']]);
+		 Route::get('getPublicaciones', 'PublicacionController@getData');
 });
 
 

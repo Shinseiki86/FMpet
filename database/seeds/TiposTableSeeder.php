@@ -33,8 +33,10 @@ class TiposTableSeeder extends Seeder
 		}
 
 		$publicacionEstados = [
-			['PUES_NOMBRE' => 'xxx'],
-			['PUES_NOMBRE' => 'xxxxxx'],
+			['PUES_NOMBRE' => 'PUBLICADO'],
+			['PUES_NOMBRE' => 'CERRADO'],
+			['PUES_NOMBRE' => 'CANCELADO'],
+			['PUES_NOMBRE' => 'BORRADOR'],
 		];
 		foreach ($publicacionEstados as $estado) {
 			PublicacionEstado::create($estado);

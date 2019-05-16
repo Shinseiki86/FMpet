@@ -26,6 +26,7 @@ class CreatePublicacionesTable extends Migration
             $table->string('PUBL_DESCRIPCION', 300)->comment('');
             $table->double('PUBL_LATITUD')->comment('');
             $table->double('PUBL_LONGITUD')->comment('');
+            //$table->ipAddress('PUBL_IP')->comment('IP desde la cual se realizó la publicación');
 
             $table->unsignedInteger('PERS_ID')->comment('Llave foranea con PERSONAS');
             $table->unsignedInteger('MASC_ID')->comment('Llave foranea con MASCOTAS');

@@ -19,8 +19,8 @@
 
 	@include('widgets.forms.input', ['type'=>'select', 'column'=>10, 'name'=>'REPO_ID', 'label'=>'Seleccionar reporte', 'data'=>array_pluck($arrReports, 'display', 'route')])
 
-	<div class="col-xs-2 hide" style="margin-top: 25px;">
-		<button type="button" id="btnViewForm" class="btn btn-link pull-right">
+	<div class="col-xs-2 hide btnViewForm">
+		<button type="button" id="btnViewForm" class="btn btn-link">
 			<span class="fa fa-caret-down iconBtn"></span>
 			<span class="textBtn">Filtros</span>
 		</button>
@@ -35,42 +35,42 @@
 
 
 	{{-- REPORTE --}}
-	<div class="col-xs-12">
-		<div id="tabsReport" class="hide">
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tabTable" data-toggle="tab">Reporte</a></li>
-				<li><a href="#tabGraf" data-toggle="tab">Gráfico</a></li>
-				<div class="ctrlChart hide">
-					<div class="col-xs-4 col-sm-5">
-						{{ Form::select('columnChart', [''=>''], null, [
-							'id'=>'columnChart',
-							'class'=>'form-control selectpicker',
-							'data-allow-clear'=>'true',
-							'data-placeholder'=>'Seleccione una columna',
-						])}}
-					</div>
-					<div class="col-xs-3 col-sm-2" >
-						{{ Form::select('typeChart', ['bar'=>'Barras','pie'=>'Torta'], 'bar', [
-							'id'=>'typeChart',
-							'class'=>'form-control',
-						])}}
-					</div>
+	<div id="tabsReport" class="hide">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tabTable" data-toggle="tab">Reporte</a></li>
+			<li><a href="#tabGraf" data-toggle="tab">Gráfico</a></li>
+			<div class="ctrlChart hide">
+				<div class="col-xs-7 col-sm-5">
+					{{ Form::select('columnChart', [''=>''], null, [
+						'id'=>'columnChart',
+						'class'=>'form-control selectpicker',
+						'data-allow-clear'=>'true',
+						'data-placeholder'=>'Seleccione una columna',
+					])}}
 				</div>
-			</ul>
-
-			<div class="tab-content">
-				<div class="tab-pane active" id="tabTable">
-					<table id="tbQuery" class="table table-striped">
-						<thead><tr><th></th></tr></thead>
-						<tbody><tr><td></td></tr></tbody>
-					</table>        	
-				</div>
-				<div class="tab-pane" id="tabGraf">
-					<canvas class="canvas-chart" id="chart" style="height:350px;"></canvas>
+				<div class="col-xs-5 col-sm-2" >
+					{{ Form::select('typeChart', ['bar'=>'Barras','pie'=>'Torta'], 'bar', [
+						'id'=>'typeChart',
+						'class'=>'form-control',
+					])}}
 				</div>
 			</div>
-		</div>
+		</ul>
 
+		<div class="tab-content">
+			<div class="tab-pane active" id="tabTable">
+				<table id="tbQuery" class="table table-striped">
+					<thead><tr><th></th></tr></thead>
+					<tbody><tr><td></td></tr></tbody>
+				</table>        	
+			</div>
+			<div class="tab-pane" id="tabGraf">
+				<canvas class="canvas-chart" id="chart" style="height:380px; min-height: 300px"></canvas>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 showErr">
 		<code id="err" class="hide"></code>
 	</div>
 
@@ -350,5 +350,8 @@
 @push('head')
 	<style type="text/css">
 		.row{margin: 0px 0px;}
+		.ctrlChart>div{padding: 8px 0px;}
+		.showErr{padding-top: 20px;}
+		.btnViewForm{margin-top: 25px; left: -25px;}
 	</style>
 @endpush

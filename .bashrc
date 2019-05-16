@@ -1,27 +1,27 @@
 # laravel new-app
 alias laravel="git clone -o laravel -b develop https://github.com/laravel/laravel.git"
 
+# Artisan
 alias art="php artisan"
-alias art:mig="php artisan migrate"
-alias art:reset="php artisan migrate:reset && php artisan migrate --seed"
-alias art:ref="php artisan migrate:refresh --seed"
-alias art:roll="php artisan migrate:rollback"
-alias t="vendor/bin/phpunit --debug"
-alias art:sch="php artisan schedule:run"
-alias art:cmpl="php artisan clear-compiled"
-alias seed="php artisan make:seeder"
-alias ejeseed="php artisan db:seed --class="
-alias art:mig:seed "php artisan migrate --seed"
+alias art:mig="art migrate"
+alias art:reset="art migrate:reset"
+alias art:fresh="art migrate:fresh --seed"
+alias art:refresh="art migrate:refresh --seed"
+alias art:rollback="art migrate:rollback"
+alias art:schedule="art schedule:run"
+alias art:seed="art db:seed --class="
 
 alias art:jobs="art queue:work --sleep=3 --tries=3 --daemon"
 
-alias art:dump="php artisan dump autoload"
-alias art:cac="php artisan cache:clear"
-alias art:vc="php artisan view:clear"
-alias art:rc="php artisan route:clear"
-alias art:opt="php artisan optimize"
-alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear && composer dump"
+alias art:dump="art dump autoload"
+alias art:cac="art cache:clear"
+alias art:vc="art view:clear"
+alias art:rc="art route:clear"
+alias art:opt="art optimize"
+alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear && art:dump"
 
+# phpunit
+alias t="vendor/bin/phpunit --debug"
 
 # Git
 alias ga="git add"

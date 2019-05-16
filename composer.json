@@ -6,25 +6,24 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "barryvdh/laravel-dompdf": "^0.8.3",
-        "doctrine/dbal": "^2.8",
-        "felixkiss/uniquewith-validator": "^3.1",
-        "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.5",
-        "maatwebsite/excel": "^3.1",
-        "owen-it/laravel-auditing": "^8.0",
         "yajra/laravel-datatables": "^1.0",
-        "zizaco/entrust": "^1.9"
+        "owen-it/laravel-auditing": "^8.0",
+        "zizaco/entrust": "^1.9",
+        "doctrine/dbal": "^2.8",
+        "felixkiss/uniquewith-validator": "^3.1",
+        "fideloper/proxy": "~3.3",
+        "barryvdh/laravel-dompdf": "^0.8.3",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
-        "phpunit/phpunit": "~6.0",
-        "symfony/thanks": "^1.0"
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "classmap": [
