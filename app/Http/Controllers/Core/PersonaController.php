@@ -133,7 +133,7 @@ class PersonaController extends Controller
 	 * @param  int  $PERS_ID
 	 * @return Response
 	 */
-	private function getParameters($value='')
+	private function getParameters()
 	{
 		//Se crea un array con Personas disponibles
 		$arrPersonas = model_to_array(Persona::class, expression_concat([

@@ -22,14 +22,24 @@ class Publicacion extends ModelWithSoftDeletes
 		'PUBL_DESCRIPCION',
 		'PUBL_LATITUD',
 		'PUBL_LONGITUD',
+		'PUES_ID',
+		'PUTI_ID',
+		'PERS_ID',
+		'MASC_ID',
+		'BARR_ID',
 	];
 
 	public static function rules($id = 0){
 		return $rules = [
 			'PUBL_TITULO'      => ['required','max:50'],
 			'PUBL_DESCRIPCION' => ['required','max:300'],
-			'PUBL_LATITUD'     => ['numeric','between:-90,90'],
-			'PUBL_LONGITUD'    => ['numeric','between:-180,180'],
+			'PUBL_LATITUD'     => ['required','numeric','between:-90,90'],
+			'PUBL_LONGITUD'    => ['required','numeric','between:-180,180'],
+			'PUES_ID'          => ['required','numeric'],
+			'PUTI_ID'          => ['required','numeric'],
+			'PERS_ID'          => ['required','numeric'],
+			'MASC_ID'          => ['required','numeric'],
+			'BARR_ID'          => ['required','numeric'],
 		];
 	}
 

@@ -5,7 +5,9 @@
 
 	@include('widgets.forms.input', ['type'=>'text', 'column'=>8, 'name'=>'CIUD_NOMBRE', 'label'=>'Nombre', 'options'=>['maxlength' => '300'] ])
 
-	@include('widgets.forms.input', ['type'=>'select', 'name'=>'DEPA_ID', 'label'=>'Departamento', 'data'=>$arrDepartamentos ])
+	{{-- @include('widgets.forms.input', ['type'=>'select', 'name'=>'DEPA_ID', 'label'=>'Departamento', 'data'=>$arrDepartamentos ]) --}}
+
+	@include('widgets.forms.input', ['type'=>'select', 'name'=>'DEPA_ID', 'label'=>'Departamento', 'ajax'=>['model'=>'Departamento','column'=>'DEPA_NOMBRE'], 'options'=>['required'] ])
 
 	<!-- Botones -->
 	@include('widgets.forms.buttons', ['url' => 'CnfgGeograficos/ciudades'])

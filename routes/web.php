@@ -26,16 +26,17 @@ Route::group(['prefix'=>'auth', 'as'=>'auth.', 'namespace'=>'Auth'], function() 
 //Dashboard
 Route::get('getDashboardUsuariosPorRol', 'Auth\RoleController@getUsuariosPorRol');
 
-
-//Página principal. Si el usuario es admin, se muestra el dashboard.
 Route::group(['middleware'=>'auth'], function() {
+	//Página principal. Si el usuario es admin, se muestra el dashboard.
 	Route::get('/', function(){
 		if(Entrust::hasRole(['owner','admin','gesthum']))
 			return view('dashboard/charts');
 		return view('layouts.menu');
 	});
+	//Ruta para select2 con ajax
 	Route::get('getArrModel', 'Controller@ajax');
-	/* 	Idea para reemplazar las rutas de Json Datatable Ajax
+	//
+	/*/Idea para reemplazar las rutas de Json Datatable Ajax EN DESARROLLO
 	Route::get('getDatatableJson/{namespace}/{controller}', function($namespace, $controller ){
 		$controller = '\App\Http\Controllers\\'.$namespace.'\\'.$controller.'Controller';
 		$app = app($controller);
@@ -44,7 +45,7 @@ Route::group(['middleware'=>'auth'], function() {
 });
 
 //Admn App
-Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
+Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App', 'middleware'=>'auth'], function() {
 	Route::resource('menu', 'MenuController', ['parameters'=>['menu'=>'MENU_ID']]);
 	Route::resource('parametersglobal', 'ParameterGlobalController', ['parameters'=>['parametersglobal'=>'PGLO__ID']]);
 	Route::post('menu/reorder', 'MenuController@reorder')->name('menu.reorder');
@@ -55,33 +56,34 @@ Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App'], function() {
 });
 
 //Reportes
-Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report'], function() {
+Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report', 'middleware'=>'auth'], function() {
 	Route::get('/', 'ReportController@index')->name('index');
 	Route::get('/viewForm', 'ReportController@viewForm')->name('viewForm');
 	Route::post('getData/{controller}/{action}', 'ReportController@getData')->name('getData');
 });
 /*************  Fin Routes del sistema  *************/
 
+Route::group(['middleware'=>'auth'], function() {
+	Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace'=>'CnfgGeograficos'], function() {
+		Route::resource('paises', 'PaisController', ['parameters'=>['pais'=>'PAIS_ID']]);
+			 Route::get('getPaises', 'PaisController@getData');
+		Route::resource('departamentos', 'DepartamentoController', ['parameters'=>['departamento'=>'DEPA_ID']]);
+			 Route::get('getDepartamentos', 'DepartamentoController@getData');
+		Route::resource('ciudades', 'CiudadController', ['parameters'=>['ciudad'=>'CIUD_ID']]);
+			 Route::get('getCiudades', 'CiudadController@getData');
+		Route::resource('barrios', 'BarrioController', ['parameters'=>['barrio'=>'BARR_ID']]);
+			 Route::get('getBarrios', 'BarrioController@getData');
+	});
 
-Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace'=>'CnfgGeograficos'], function() {
-	Route::resource('paises', 'PaisController', ['parameters'=>['pais'=>'PAIS_ID']]);
-		 Route::get('getPaises', 'PaisController@getData');
-	Route::resource('departamentos', 'DepartamentoController', ['parameters'=>['departamento'=>'DEPA_ID']]);
-		 Route::get('getDepartamentos', 'DepartamentoController@getData');
-	Route::resource('ciudades', 'CiudadController', ['parameters'=>['ciudad'=>'CIUD_ID']]);
-		 Route::get('getCiudades', 'CiudadController@getData');
-	Route::resource('barrios', 'BarrioController', ['parameters'=>['barrio'=>'BARR_ID']]);
-		 Route::get('getBarrios', 'BarrioController@getData');
+
+	Route::group(['prefix'=>'core', 'as'=>'Core.', 'namespace'=>'Core'], function() {
+		Route::resource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
+			 Route::get('getMascotas', 'MascotaController@getData');
+		Route::resource('personas', 'PersonaController', ['parameters'=>['persona'=>'PERS_ID']]);
+			 Route::get('getPersonas', 'PersonaController@getData');
+		Route::resource('publicaciones', 'PublicacionController', ['parameters'=>['publicacione'=>'PUBL_ID']]);
+			 Route::get('getPublicaciones', 'PublicacionController@getData');
+	});
+
+
 });
-
-
-Route::group(['prefix'=>'core', 'as'=>'Core.', 'namespace'=>'Core'], function() {
-	Route::resource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
-		 Route::get('getMascotas', 'MascotaController@getData');
-	Route::resource('personas', 'PersonaController', ['parameters'=>['persona'=>'PERS_ID']]);
-		 Route::get('getPersonas', 'PersonaController@getData');
-	Route::resource('publicaciones', 'PublicacionController', ['parameters'=>['publicacion'=>'PUBL_ID']]);
-		 Route::get('getPublicaciones', 'PublicacionController@getData');
-});
-
-

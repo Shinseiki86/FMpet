@@ -5,3 +5,12 @@
 		@include('widgets.forms.alerta',compact('name'))
 	</div>
 </div>
+
+@if(isset($dependiente))
+	@include('widgets.forms.select-dependiente', [
+		'parent'   =>$dependiente['parent'],
+		'model'   =>$dependiente['model'],
+		'children'  =>$name,
+		'column'=>$dependiente['column']
+	])
+@endif

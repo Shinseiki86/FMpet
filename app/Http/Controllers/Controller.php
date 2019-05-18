@@ -16,16 +16,16 @@ class Controller extends BaseController
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	protected $nameClass;
+	protected $routeApi;
 
-	public function __construct($requireAuth=true)
+	public function __construct()
 	{
         //dd(get_class_methods(session()) );dd(session());
         //Se crea arreglo en session con los items del menú disponibles
         if(auth()->check() and is_null(session()->get('menusLeft')))
             \App\Http\Controllers\App\MenuController::refreshMenu();
 
-		if($requireAuth)
-			$this->middleware('auth');
+        $this->routeApi = request()->wantsJson();
 
 		if(property_exists($this, 'class')){
 			$this->nameClass =  strtolower(last(explode('\\',basename($this->class))));
@@ -89,25 +89,45 @@ class Controller extends BaseController
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data);
 
-		if($validator->passes()){
-			$class = get_model($this->class);
 
-			//Se crea el registro.
+		if($validator->passes()){
+			// $class = get_model($this->class);
+
 			if(array_has($data, 'password'))
 				$data['password'] = bcrypt($data['password']);
-			$model = $class::create($data);
+
+			//Se crea el registro.
+			$model = new $this->class;
+			$model = $model->fill($data);
 			$model = $this->postCreateOrUpdate($model);
 			$model->save();
 
 			//Se crean las relaciones
-			$this->storeRelations($model, $relations);
+			$this->updateRelations($model, $data);
 
 			$this->nameClassClass = str_upperspace(class_basename($model));
+
 			// redirecciona al index de controlador
-			flash_alert( $this->nameClassClass.' '.$model->id.' creado exitosamente.', 'success' );
-			return redirect()->route($this->route.'.index')->send();
+			if($this->routeApi){
+				return response()->json([
+					'data'   => $data,
+					'status' => false,
+					'message'=>'OK'
+				]);
+			} else {
+				flash_alert( $this->nameClassClass.' '.$model->id.' creado exitosamente.', 'success' );
+				return redirect()->route($this->route.'.index')->send();
+			}
 		} else {
-			return redirect()->back()->withErrors($validator)->withInput()->send();
+			if($this->routeApi){
+				return response()->json([
+					'data'   => $validator->errors(),
+					'status' => false,
+					'message'=>'ERR'
+				]);
+			} else {
+				return redirect()->back()->withErrors($validator)->withInput()->send();
+			}
 		}		
 	}
 
@@ -137,14 +157,32 @@ class Controller extends BaseController
 			$model->save();
 
 			//Se crean las relaciones
-			$this->storeRelations($model, $relations);
-
+			// $this->storeRelations($model, $relations);
+			$this->updateRelations($model, $relations);
 			$this->nameClassClass = str_upperspace(class_basename($model));
+			$msg = [$this->nameClassClass.' '.$id.' modificado exitosamente.', 'success'];
+
 			// redirecciona al index de controlador
-			flash_alert( $this->nameClassClass.' '.$id.' modificado exitosamente.', 'success' );
-			return redirect()->route($this->route.'.index')->send();
+			if($this->routeApi){
+				return response()->json([
+					'data'   => $data,
+					'status' => $msg[1],
+					'message'=> $msg[0]
+				]);
+			} else {
+				flash_alert( $msg[0], $msg[1] );
+				return redirect()->route($this->route.'.index')->send();
+			}
 		} else {
-			return redirect()->back()->withErrors($validator)->withInput()->send();
+			if($this->routeApi){
+				return response()->json([
+					'data'   => $validator->errors(),
+					'status' => 'danger',
+					'message'=> 'Datos presentan inconsistencias.'
+				]);
+			} else {
+				return redirect()->back()->withErrors($validator)->withInput()->send();
+			}
 		}
 	}
 
@@ -220,6 +258,66 @@ class Controller extends BaseController
 		}
 	}
 
+
+    public function updateRelations($model, $attributes)
+    {
+        foreach ($attributes as $key => $val) {
+            if (isset($model) &&
+                method_exists($model, $key) &&
+                is_a(@$model->$key(), 'Illuminate\Database\Eloquent\Relations\Relation')
+            ) {
+                $methodClass = get_class($model->$key($key));
+                switch ($methodClass) {
+                    case 'Illuminate\Database\Eloquent\Relations\BelongsToMany':
+                        $new_values = array_get($attributes, $key, []);
+                        if (array_search('', $new_values) !== false) {
+                            unset($new_values[array_search('', $new_values)]);
+                        }
+                        $model->$key()->sync(array_values($new_values));
+                        break;
+                    case 'Illuminate\Database\Eloquent\Relations\BelongsTo':
+                        $model_key = $model->$key()->getQualifiedForeignKey();
+                        $new_value = array_get($attributes, $key, null);
+                        $new_value = $new_value == '' ? null : $new_value;
+                        $model->$model_key = $new_value;
+                        break;
+                    case 'Illuminate\Database\Eloquent\Relations\HasOne':
+                        break;
+                    case 'Illuminate\Database\Eloquent\Relations\HasOneOrMany':
+                        break;
+                    case 'Illuminate\Database\Eloquent\Relations\HasMany':
+                        $new_values = array_get($attributes, $key, []);
+                        if (array_search('', $new_values) !== false) {
+                            unset($new_values[array_search('', $new_values)]);
+                        }
+
+                        list($temp, $model_key) = explode('.', $model->$key($key)->getQualifiedForeignKeyName());
+
+                        foreach ($model->$key as $rel) {
+                            if (!in_array($rel->id, $new_values)) {
+                                $rel->$model_key = null;
+                                $rel->save();
+                            }
+                            unset($new_values[array_search($rel->id, $new_values)]);
+                        }
+
+                        if (count($new_values) > 0) {
+                            $related = get_class($model->$key()->getRelated());
+                            foreach ($new_values as $val) {
+                                $rel = $related::find($val);
+                                $rel->$model_key = $model->id;
+                                $rel->save();
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        return $model;
+    }
+
+
 	/**
 	 * Elimina un registro en la base de datos.
 	 *
@@ -241,17 +339,28 @@ class Controller extends BaseController
 
 		//Si el registro fue creado por SYSTEM, no se puede borrar.
 		if($model->$created_by == 'SYSTEM'){
-			flash_modal( $nameClass.' '.$id.' no se puede borrar (Creado por SYSTEM).', 'danger' );
+			$msg = [ $nameClass.' '.$id.' no se puede borrar (Creado por SYSTEM).', 'danger' ];
 		} else {
 
 			$relations = $model->relationships('HasMany');
 
 			if(!$this->validateRelations($nameClass, $relations)){
 				$model->delete();
-				flash_alert( $nameClass.' '.$id.' eliminado exitosamente.', 'success' );
+				$msg = [ $nameClass.' '.$id.' eliminado exitosamente.', 'success' ];
 			}
 		}
-		return redirect()->route($this->route.'.index')->send();
+
+		// redirecciona al index de controlador
+		if($this->routeApi){
+			return response()->json([
+				'data'   => null,
+				'status' => $msg[1],
+				'message'=> $msg[0]
+			]);
+		} else {
+			flash_modal( $msg[0], $msg[1] );
+			return redirect()->route($this->route.'.index')->send();
+		}
 	}
 
 	protected function validateRelations($nameClass, $relations)
@@ -267,8 +376,17 @@ class Controller extends BaseController
 		}
 
 		if(!empty($strRelations)){
-			session()->flash('deleteWithRelations', compact('nameClass','strRelations'));
+			if($this->routeApi){
+				return response()->json([
+					'data'   => null,
+					'status' => $msg[1],
+					'message'=> $msg[0]
+				]);
+			} else {
+				session()->flash('deleteWithRelations', compact('nameClass','strRelations'));
+			}
 		}
+
 		return $hasRelations;
 	}
 

@@ -30,7 +30,45 @@ class PublicacionController extends Controller
 	 */
 	public function index()
 	{
-		return view($this->route.'.index');
+		if($this->routeApi){
+			$data = $this->buildQuery()->get();
+			return response()->json([
+				'data'   => $data,
+				'status' => false,
+				'mensaje'=>'OK'
+			]);
+		} else {
+			return view($this->route.'.index');
+		}
+	}
+
+	private function buildQuery()
+	{
+		$PERS_NOMBREAPELLIDO = expression_concat([
+			'PERS_NOMBRE',
+			'PERS_APELLIDO',
+			], 'PERS_NOMBREAPELLIDO'
+		);
+
+		return Publicacion::with([
+				'mascota:MASC_ID,MASC_NOMBRE,MASC_EDAD',
+				'barrio:BARR_ID,BARR_NOMBRE',
+			])
+			->leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'PUBLICACIONES.PERS_ID')
+			->select([
+				'PUBL_ID',
+				'PUBL_TITULO',
+				'PUBL_DESCRIPCION',
+				'PUBLICACIONES.PERS_ID',
+				$PERS_NOMBREAPELLIDO,
+				'PUBL_LATITUD',
+				'PUBL_LONGITUD',
+				'PUES_ID',
+				'PUTI_ID',
+				'MASC_ID',
+				'BARR_ID',
+				'PUBL_CREADOPOR',
+			]);
 	}
 
 	/**
@@ -42,24 +80,7 @@ class PublicacionController extends Controller
 	{
 		$model = new $this->class;
 
-		$PERS_NOMBREAPELLIDO = expression_concat([
-			'PERS_NOMBRE',
-			'PERS_APELLIDO',
-			], 'PERS_NOMBREAPELLIDO'
-		);
-
-
-		$query = Publicacion::with(['mascota', 'barrio.ciudad.departamento.pais'])
-			->leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'PUBLICACIONES.PERS_ID')
-			//->leftJoin('MASCOTAS', 'MASCOTAS.MASC_ID', 'PUBLICACIONES.MASC_ID')
-			->select([
-				'PUBL_TITULO',
-				'PUBL_DESCRIPCION',
-				$PERS_NOMBREAPELLIDO,
-				'PUBL_LATITUD',
-				'PUBL_LONGITUD',
-				'PUBL_CREADOPOR',
-			]);
+		$query = $this->buildQuery();
 
 		return Datatables::eloquent($query)
 			->filterColumn('PERS_NOMBREAPELLIDO', function($query, $keyword){
@@ -89,7 +110,7 @@ class PublicacionController extends Controller
 	 */
 	public function store()
 	{
-		parent::storeModel();
+		return parent::storeModel();
 	}
 
 
@@ -102,10 +123,10 @@ class PublicacionController extends Controller
 	public function edit($PUBL_ID)
 	{
 		// Se obtiene el registro
-		$publicacion = Publicacion::findOrFail($PUBL_ID);
+		$publicacion = Publicacion::with('barrio.ciudad.departamento')->findOrFail($PUBL_ID);
 
 		// Muestra el formulario de edición y pasa el registro a editar
-		return view($this->route.'.edit', compact('publicacion')+$this->getParameters());
+		return view($this->route.'.edit', compact('publicacion')+$this->getParameters($publicacion));
 	}
 
 
@@ -117,7 +138,7 @@ class PublicacionController extends Controller
 	 */
 	public function update($PUBL_ID)
 	{
-		parent::updateModel($PUBL_ID);
+		return parent::updateModel($PUBL_ID);
 	}
 
 	/**
@@ -128,7 +149,7 @@ class PublicacionController extends Controller
 	 */
 	public function destroy($PUBL_ID)
 	{
-		parent::destroyModel($PUBL_ID);
+		return parent::destroyModel($PUBL_ID);
 	}
 
 
@@ -138,7 +159,7 @@ class PublicacionController extends Controller
 	 * @param  int  $PUBL_ID
 	 * @return Response
 	 */
-	private function getParameters($value='')
+	private function getParameters(Publicacion $publicacion = null)
 	{
 		//Se crea un array con Personas disponibles
 		$arrPersonas = model_to_array(Persona::class, expression_concat([
@@ -148,7 +169,32 @@ class PublicacionController extends Controller
 			], 'PERS_NOMBREAPELLIDO')
 		);
 
-		return compact('arrPersonas');
+		$arrPubEstados = model_to_array(PublicacionEstado::class, 'PUES_NOMBRE');
+		$arrPubTipos = model_to_array(PublicacionTipo::class, 'PUTI_NOMBRE');
+		$arrMascotas = model_to_array(Mascota::class, 'MASC_NOMBRE');
+
+		if(isset($publicacion)){
+			$arrBarios = model_to_array(
+				Barrio::class, 'BARR_NOMBRE',
+				[['CIUD_ID','=',$publicacion->barrio->CIUD_ID]]
+			);
+			$arrCiudades = model_to_array(
+				Ciudad::class, 'CIUD_NOMBRE',
+				[['DEPA_ID','=',$publicacion->barrio->ciudad->DEPA_ID]]
+			);
+			$arrDepartamentos = model_to_array(
+				Departamento::class, 'DEPA_NOMBRE',
+				[['PAIS_ID','=',$publicacion->barrio->ciudad->departamento->PAIS_ID]]
+			);
+		} else {
+			$arrBarios = null;
+			$arrCiudades = null;
+			$arrDepartamentos = null;
+		}
+
+		$arrPaises = model_to_array(Pais::class, 'PAIS_NOMBRE');
+
+		return compact('arrPersonas','arrPubEstados','arrPubTipos','arrMascotas','arrCiudades');
 	}
 
 }

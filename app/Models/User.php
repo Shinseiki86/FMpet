@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
+
 use App\Traits\ModelRulesTrait;
 use App\Traits\RelationshipsTrait;
 
@@ -14,7 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements AuditableContract
 {
-    use Notifiable, EntrustUserTrait, AuditableTrait, ModelRulesTrait, RelationshipsTrait;
+    use HasApiTokens, Notifiable, EntrustUserTrait, AuditableTrait, ModelRulesTrait, RelationshipsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -121,5 +123,10 @@ class User extends Authenticatable implements AuditableContract
 
     public static function resolveId() {
         return auth()->check() ? auth()->user()->getAuthIdentifier() : null;
+    }
+
+    //Auth from API
+    public function findForPassport($username) {
+        return $this->where('username', $username)->first();
     }
 }
