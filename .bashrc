@@ -13,12 +13,11 @@ alias art:seed="art db:seed --class="
 
 alias art:jobs="art queue:work --sleep=3 --tries=3 --daemon"
 
-alias art:dump="art dump autoload"
 alias art:cac="art cache:clear"
 alias art:vc="art view:clear"
 alias art:rc="art route:clear"
 alias art:opt="art optimize"
-alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear && art:dump"
+alias art:cls="art clear-compiled && art cache:clear && art view:clear && art route:clear && art optimize && art debugbar:clear && comp:dump"
 
 # phpunit
 alias t="vendor/bin/phpunit --debug"

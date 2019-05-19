@@ -68,4 +68,9 @@ class Publicacion extends ModelWithSoftDeletes
 		return $this->belongsTo(Barrio::class, 'BARR_ID');
 	}
 
+	public function comentarios()
+	{
+		return $this->hasMany(Comentario::class, 'PUBL_ID');
+	}
+
 }

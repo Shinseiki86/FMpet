@@ -14,3 +14,11 @@ $factory->define(App\Models\Publicacion::class, function (Faker $faker) {
     ];
 });
 
+
+$factory->define(App\Models\Comentario::class, function (Faker $faker) {
+    return [
+        'COME_DESCRIPCION'  => mb_strtoupper($faker->text($maxNbChars = 300)),
+        'COME_CREADOPOR'    => 'TEST',
+    ];
+});
+

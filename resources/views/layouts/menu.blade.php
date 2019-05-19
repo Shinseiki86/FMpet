@@ -11,13 +11,13 @@
 
 		<div id="page-wrapper">
 
-			<div class="row">
+			<div class="row" style="position: fixed;width: 100%;z-index: 10;background: white;top: 50px;">
 				<div class="col-lg-12">
-					<h1 class="page-header">@yield('page_heading', 'Bienvenido!')</h1>
+					<h1 class="page-header" style="margin-bottom: 0px;">@yield('page_heading', 'Bienvenido!')</h1>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" style="padding-top: 80px;">
 				@yield('section', '')
 			</div>
 			

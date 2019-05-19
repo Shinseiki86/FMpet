@@ -30,8 +30,8 @@ class PublicacionController extends Controller
 	 */
 	public function index()
 	{
+		$query = $this->buildQuery();
 		if($this->routeApi){
-			$query = $this->buildQuery();
 			$attributes = (new $this->class)->getFillable();
 			foreach (request()->all() as $key => $value) {
 				if(in_array('MASC_ID', $attributes))
@@ -44,7 +44,8 @@ class PublicacionController extends Controller
 				'mensaje'=> 'OK'
 			]);
 		} else {
-			return view($this->route.'.index');
+			//return view($this->route.'.index');
+			return view($this->route.'.index', ['publicaciones'=>$query->paginate(5)]);
 		}
 	}
 
@@ -57,7 +58,11 @@ class PublicacionController extends Controller
 		);
 
 		return Publicacion::with([
+				'comentarios',
 				'mascota:MASC_ID,MASC_NOMBRE,MASC_EDAD',
+				'barrio:BARR_ID,BARR_NOMBRE',
+				'publicacionEstado:PUES_ID,PUES_NOMBRE',
+				'publicacionTipo:PUTI_ID,PUTI_NOMBRE,PUTI_CLASS',
 				'barrio:BARR_ID,BARR_NOMBRE',
 				//'persona:PERS_ID,PERS_NOMBRE,PERS_APELLIDO',
 			])
@@ -75,6 +80,7 @@ class PublicacionController extends Controller
 				'MASC_ID',
 				'BARR_ID',
 				'PUBL_CREADOPOR',
+				'PUBL_FECHACREADO',
 			]);
 	}
 

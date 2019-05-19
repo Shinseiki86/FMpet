@@ -358,7 +358,8 @@ class Controller extends BaseController
 				'message'=> $msg[0]
 			]);
 		} else {
-			flash_modal( $msg[0], $msg[1] );
+			if(isset($msg))
+				flash_alert( $msg[0], $msg[1] );
 			return redirect()->route($this->route.'.index')->send();
 		}
 	}

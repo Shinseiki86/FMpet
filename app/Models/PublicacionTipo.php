@@ -19,11 +19,13 @@ class PublicacionTipo extends ModelWithSoftDeletes
 
 	protected $fillable = [
 		'PUTI_NOMBRE',
+		'PUTI_CLASS',
 	];
 
 	public static function rules($id = 0){
 		return $rules = [
 			'PUTI_NOMBRE' => ['required','max:50',static::uniqueWith($id, ['PUTI_NOMBRE'])],
+			'PUTI_CLASS' => ['required','max:10'],
 		];
 	}
 

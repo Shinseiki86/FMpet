@@ -13,6 +13,14 @@ class PersonasTableSeeder extends Seeder {
         //*********************************************************************
         $this->command->info('--- Seeder personas y mascotas prueba');
 
+        $personaTipos = [
+            ['PETI_NOMBRE' => 'NATURAL'],
+            ['PETI_NOMBRE' => 'JURIDICA'],
+        ];
+        foreach ($personaTipos as $tipo) {
+            PersonaTipo::create($tipo);
+        }
+        
         $personaTipos = PersonaTipo::all();
 
         $personas = factory(Persona::class)->times(100)->make()

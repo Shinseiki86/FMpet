@@ -4,10 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePublicacionesTiposTable extends Migration
+class CreateItemsTiposTable extends Migration
 {
     
-    private $nomTabla = 'PUBLICACIONES_TIPOS';
+    private $nomTabla = 'ITEMS_TIPOS';
 
     /**
      * Run the migrations.
@@ -16,27 +16,26 @@ class CreatePublicacionesTiposTable extends Migration
      */
     public function up()
     {
-        $commentTabla = 'PUBLICACIONES_TIPOS: ';
+        $commentTabla = 'ITEMS_TIPOS: ';
 
         echo '- Creando tabla '.$this->nomTabla.'...' . PHP_EOL;
         Schema::create($this->nomTabla, function (Blueprint $table) {
-            $table->increments('PUTI_ID')->comment('Valor autonumérico, llave primaria.');
+            $table->increments('ITTI_ID')->comment('Valor autonumérico, llave primaria.');
 
-            $table->string('PUTI_NOMBRE', 50)->comment('Nombre del tipo');
-            $table->string('PUTI_CLASS', 10)->comment('Clase bootstrap');
+            $table->string('ITTI_NOMBRE', 200)->comment('Nombre del tipo');
             
             //Traza
-            $table->string('PUTI_CREADOPOR')
+            $table->string('ITTI_CREADOPOR')
                 ->comment('Usuario que creó el registro en la tabla');
-            $table->timestamp('PUTI_FECHACREADO')
+            $table->timestamp('ITTI_FECHACREADO')
                 ->comment('Fecha en que se creó el registro en la tabla.');
-            $table->string('PUTI_MODIFICADOPOR')->nullable()
+            $table->string('ITTI_MODIFICADOPOR')->nullable()
                 ->comment('Usuario que realizó la última modificación del registro en la tabla.');
-            $table->timestamp('PUTI_FECHAMODIFICADO')->nullable()
+            $table->timestamp('ITTI_FECHAMODIFICADO')->nullable()
                 ->comment('Fecha de la última modificación del registro en la tabla.');
-            $table->string('PUTI_ELIMINADOPOR')->nullable()
+            $table->string('ITTI_ELIMINADOPOR')->nullable()
                 ->comment('Usuario que eliminó el registro en la tabla.');
-            $table->timestamp('PUTI_FECHAELIMINADO')->nullable()
+            $table->timestamp('ITTI_FECHAELIMINADO')->nullable()
                 ->comment('Fecha en que se eliminó el registro en la tabla.');
 
         });

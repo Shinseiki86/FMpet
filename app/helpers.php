@@ -243,7 +243,8 @@ if (! function_exists('flash_alert')) {
      * @return void
      */
     function flash_alert( $msg, $type = 'info' ) {
-        session()->flash('alert-'.$type, [$msg]);
+        if(isset($msg))
+            session()->flash('alert-'.$type, [$msg]);
     }
 }
 
@@ -256,7 +257,8 @@ if (! function_exists('flash_modal')) {
      * @return void
      */
     function flash_modal( $msg, $type = 'info' ) {
-        session()->flash('modal-'.$type, $msg);
+        if(isset($msg))
+            session()->flash('modal-'.$type, $msg);
     }
 }
 

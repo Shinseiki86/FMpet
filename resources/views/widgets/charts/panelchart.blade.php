@@ -8,7 +8,6 @@
 					<option value="pie">Torta</option>
 				</select>
 				<a class="panelButton"><i class="fas fa-sync-alt"></i></a>
-				<a class="panelButton"><i class="fas fa-minus"></i></a>
 				<a class="panelButton"><i class="fas fa-times"></i></a>
 			</div>
 		</div>
