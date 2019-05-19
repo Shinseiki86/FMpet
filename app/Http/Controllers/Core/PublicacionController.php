@@ -31,11 +31,17 @@ class PublicacionController extends Controller
 	public function index()
 	{
 		if($this->routeApi){
-			$data = $this->buildQuery()->get();
+			$query = $this->buildQuery();
+			$attributes = (new $this->class)->getFillable();
+			foreach (request()->all() as $key => $value) {
+				if(in_array('MASC_ID', $attributes))
+					$query = $query->where('PUBLICACIONES.'.$key, $value);
+			}
+
 			return response()->json([
-				'data'   => $data,
-				'status' => false,
-				'mensaje'=>'OK'
+				'data'   => $query->get(),
+				'status' => 'success',
+				'mensaje'=> 'OK'
 			]);
 		} else {
 			return view($this->route.'.index');
@@ -53,6 +59,7 @@ class PublicacionController extends Controller
 		return Publicacion::with([
 				'mascota:MASC_ID,MASC_NOMBRE,MASC_EDAD',
 				'barrio:BARR_ID,BARR_NOMBRE',
+				//'persona:PERS_ID,PERS_NOMBRE,PERS_APELLIDO',
 			])
 			->leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'PUBLICACIONES.PERS_ID')
 			->select([
