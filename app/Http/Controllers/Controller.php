@@ -134,7 +134,7 @@ class Controller extends BaseController
 			// redirecciona al index de controlador
 			if($this->routeApi){
 				return response()->json([
-					'data'   => $data,
+					'data'   => $model,
 					'status' => false,
 					'message'=>'OK'
 				]);

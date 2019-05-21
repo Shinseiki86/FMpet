@@ -139,7 +139,7 @@ class PublicacionController extends Controller
 	public function edit($PUBL_ID)
 	{
 		// Se obtiene el registro
-		$publicacion = Publicacion::with('barrio.ciudad.departamento')->findOrFail($PUBL_ID);
+		$publicacion = Publicacion::with(['barrio.ciudad.departamento'])->findOrFail($PUBL_ID);
 
 		// Muestra el formulario de edición y pasa el registro a editar
 		return view($this->route.'.edit', compact('publicacion')+$this->getParameters($publicacion));
@@ -164,15 +164,18 @@ class PublicacionController extends Controller
 	protected function postCreateOrUpdate($model)
 	{
 		$files = request()->file('arrAdjuntos');
-		foreach ($files as $file) {
-					
-		    $extension = $file->getClientOriginalExtension();
-		    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
-			$path = public_path('adjuntos/'.$model->PUBL_ID);
-			$filename = 'Adj_'.$adj->ADJU_ID.'.'.$file->getClientOriginalExtension();
-			$file->move($path, $filename);
-		    $adj->update(['ADJU_PATH'=>$filename]);
+		if(count($files) > 0){
+			foreach ($files as $file) {
+						
+			    $extension = $file->getClientOriginalExtension();
+			    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
+				$path = public_path('adjuntos/'.$model->PUBL_ID);
+				$filename = 'Adj_'.$adj->ADJU_ID.'.'.$file->getClientOriginalExtension();
+				$file->move($path, $filename);
+			    $adj->update(['ADJU_PATH'=>$filename]);
+			}
 		}
+		$model->load('adjuntos');
 		return $model;
 	}
 
