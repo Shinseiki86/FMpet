@@ -17,14 +17,24 @@
 	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'MASC_ID', 'label'=>'Mascota', 'data'=>$arrMascotas, 'options'=>['required'] ])
 
 
-	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'CIUD_ID', 'label'=>'Ciudad', 'data'=>$arrCiudades, 'options'=>['required'] ])
+	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'PAIS_ID', 'label'=>'Pais', 'data'=>$arrPaises, 'options'=>['required'] ])
 	
+	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'DEPA_ID', 'label'=>'Departamento',
+		'dependiente'=>['parent'=>'PAIS_ID', 'model'=>'Departamento', 'column'=>'DEPA_NOMBRE'],
+		'options'=>['required']
+	])
+	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'CIUD_ID', 'label'=>'Ciudad',
+		'dependiente'=>['parent'=>'DEPA_ID', 'model'=>'Ciudad', 'column'=>'CIUD_NOMBRE'],
+		'options'=>['required']
+	])
+
 	@include('widgets.forms.input', ['type'=>'select', 'column'=>6, 'name'=>'BARR_ID', 'label'=>'Barrio',
-		//'ajax'=>['model'=>'Barrio','column'=>'BARR_NOMBRE'],
 		'dependiente'=>['parent'=>'CIUD_ID', 'model'=>'Barrio', 'column'=>'BARR_NOMBRE'],
 		'options'=>['required']
 	])
 
+
+	@include('widgets.forms.input', [ 'type'=>'file', 'name'=>'arrAdjuntos[]', 'label'=>'Adjuntos', 'options'=>['maxlength' => '255', 'multiple', 'accept'=>'image/*'] ])
 
 	<!-- Botones -->
 	@include('widgets.forms.buttons', ['url' => 'core/publicaciones'])

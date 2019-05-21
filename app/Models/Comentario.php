@@ -34,5 +34,8 @@ class Comentario extends ModelWithSoftDeletes
 		return $this->belongsTo(Publicacion::class, 'PUBL_ID');
 	}
 
-
+	public function adjuntos()
+	{
+		return $this->hasMany(Adjunto::class, 'COME_ID');
+	}
 }

@@ -5,10 +5,10 @@
 
 @section('page_heading')
 	<div class="row">
-		<div id="titulo" class="col-xs-8 col-md-6 col-lg-6">
+		<div id="titulo" class="pull-left" style="width: 80%">
 			Parametros Generales
 		</div>
-		<div id="btns-top" class="col-xs-4 col-md-6 col-lg-6 text-right">
+		<div id="btns-top" class="text-right" style="width: 0%">
 			<a class='btn btn-primary' role='button' href="{{ route('app.parametersglobal.create') }}" data-tooltip="tooltip" title="Crear Nuevo" name="create">
 				<i class="fas fa-plus" aria-hidden="true"></i>
 			</a>

@@ -4,10 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateItemsPublicacionesComentariosTable extends Migration
+class CreateAdjuntosTable extends Migration
 {
     
-    private $nomTabla = 'ITEMS_PUBLICACIONES_COMENTARIOS';
+    private $nomTabla = 'ADJUNTOS';
 
     /**
      * Run the migrations.
@@ -16,39 +16,32 @@ class CreateItemsPublicacionesComentariosTable extends Migration
      */
     public function up()
     {
-        $commentTabla = 'ITEMS_PUBLICACIONES_COMENTARIOS: ';
+        $commentTabla = 'ADJUNTOS: ';
 
         echo '- Creando tabla '.$this->nomTabla.'...' . PHP_EOL;
         Schema::create($this->nomTabla, function (Blueprint $table) {
-            $table->increments('ITEM_ID')->comment('Valor autonumérico, llave primaria de la tabla.');
+            $table->increments('ADJU_ID')->comment('Valor autonumérico, llave primaria de la tabla.');
 
-            $table->string('ITEM_URL', 100)->comment('');
+            $table->string('ADJU_PATH', 255)->comment('PATH');
+            //$table->boolean('ADJU_ISPUBLICATION')->default(true)->comment('Determina si el item corresponde a una publicación o a un comentario.');
 
-            $table->unsignedInteger('ARTI_ID')->comment('Llave foranea con ARCHIVOS_TIPOS');
-            $table->unsignedInteger('ITTI_ID')->comment('Llave foranea con ITEMS_TIPOS');
-            $table->unsignedInteger('PUBL_ID')->nullable()->comment('Llave foranea con PUBLICACIONES');
-            $table->unsignedInteger('COME_ID')->nullable()->comment('Llave foranea con COMENTARIOS');
+            $table->unsignedInteger('PUBL_ID')->nullable()->comment('Llave foranea con PUBLICACIONES. Si es nulo, entonces debe estar asignado a un comentario.');
+            $table->unsignedInteger('COME_ID')->nullable()->comment('Llave foranea con COMENTARIOS. Si es nulo, entonces debe estar asignado a una publicación.');
             
             //Traza
-            $table->string('ITEM_CREADOPOR')
+            $table->string('ADJU_CREADOPOR')
                 ->comment('Usuario que creó el registro en la tabla');
-            $table->timestamp('ITEM_FECHACREADO')
+            $table->timestamp('ADJU_FECHACREADO')
                 ->comment('Fecha en que se creó el registro en la tabla.');
-            $table->string('ITEM_MODIFICADOPOR')->nullable()
+            $table->string('ADJU_MODIFICADOPOR')->nullable()
                 ->comment('Usuario que realizó la última modificación del registro en la tabla.');
-            $table->timestamp('ITEM_FECHAMODIFICADO')->nullable()
+            $table->timestamp('ADJU_FECHAMODIFICADO')->nullable()
                 ->comment('Fecha de la última modificación del registro en la tabla.');
-            $table->string('ITEM_ELIMINADOPOR')->nullable()
+            $table->string('ADJU_ELIMINADOPOR')->nullable()
                 ->comment('Usuario que eliminó el registro en la tabla.');
-            $table->timestamp('ITEM_FECHAELIMINADO')->nullable()
+            $table->timestamp('ADJU_FECHAELIMINADO')->nullable()
                 ->comment('Fecha en que se eliminó el registro en la tabla.');
 
-            //Relación con tabla ARCHIVOS_TIPOS
-            $table->foreign('ARTI_ID')->references('ARTI_ID')
-                ->on('ARCHIVOS_TIPOS')->onDelete('cascade')->onUpdate('cascade');
-            //Relación con tabla ITEMS_TIPOS
-            $table->foreign('ITTI_ID')->references('ITTI_ID')
-                ->on('ITEMS_TIPOS')->onDelete('cascade')->onUpdate('cascade');
             //Relación con tabla PUBLICACIONES
             $table->foreign('PUBL_ID')->references('PUBL_ID')
                 ->on('PUBLICACIONES')->onDelete('cascade')->onUpdate('cascade');

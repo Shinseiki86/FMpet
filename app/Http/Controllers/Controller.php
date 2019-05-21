@@ -55,6 +55,29 @@ class Controller extends BaseController
 		return response()->json($arrModel);
 	}
 
+	/**
+	 * Obtiene datos para select2 dependiente con ajax.
+	 *
+	 * @param  Request $request
+	 * @return json
+	 */
+	public function getDataSelectDepediente(Request $request)
+	{
+		$class = $request->input('model');
+		$returnColumn = $request->input('return');
+		$parent = $request->input('parent');
+		$value = $request->input('id');
+		$collectModel = [];
+		if(isset($class)){
+	        $class = get_model($class);
+	        $key = (new $class)->getKeyName();
+			$arrModel = $class::where($parent,$value)
+						->select([$key,$returnColumn ])
+						->get();
+		}
+		return response()->json($arrModel);
+	}
+
 
 	/**
 	 * {@inheritdoc}
@@ -97,10 +120,11 @@ class Controller extends BaseController
 				$data['password'] = bcrypt($data['password']);
 
 			//Se crea el registro.
-			$model = new $this->class;
-			$model = $model->fill($data);
+			//$model = new $this->class;
+			// $model = $model->fill($data);
+			$model = $this->class::create($data);
 			$model = $this->postCreateOrUpdate($model);
-			$model->save();
+			//$model->save();
 
 			//Se crean las relaciones
 			$this->updateRelations($model, $data);

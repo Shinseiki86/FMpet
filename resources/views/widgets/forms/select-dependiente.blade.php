@@ -5,10 +5,12 @@
 			if( $('#{{$children}}').val() == '' || $('#{{$children}}').val() == null)
 				$('#{{$children}}').prop('disabled', true);
 
+			var parentValue = $('#{{$parent}}').val();
+			console.log('{!! url('getDataSelectDepediente').'?model='.$model.'&parent='.$parent.'&return='.$column !!}&value='+parentValue);
 			fillDropDownAjax(
 				'{{$parent}}',
 				$('#{{$children}}'),
-				'{!! url('getArrModel').'?model='.$model.'&column='.$column !!}',
+				'{!! url('getDataSelectDepediente').'?model='.$model.'&parent='.$parent.'&return='.$column !!}',
 				'{{isset($idBusqueda)?$idBusqueda:$children}}',
 				'{{$column}}',
 				'{{isset($msgModel)?$msgModel:'datos'}}'

@@ -120,5 +120,8 @@ class UsersTableSeeder extends Seeder {
 
         //5 usuarios faker
         //$users = factory(App\User::class)->times(5)->create();
+
+        //DB::table('oauth_clients')->where('id',2)->update(['secret'=>'UW59wSYQ2bjP5LqS6hAygpfHSzq37jamkKHJI7VX']);
+
     }
 }

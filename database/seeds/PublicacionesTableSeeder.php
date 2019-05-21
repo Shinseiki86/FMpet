@@ -9,6 +9,7 @@ use App\Models\Persona;
 use App\Models\Barrio;
 
 use App\Models\Comentario;
+use App\Models\Adjunto;
 
 class PublicacionesTableSeeder extends Seeder {
 
@@ -25,6 +26,16 @@ class PublicacionesTableSeeder extends Seeder {
         ];
         foreach ($publicacionTipos as $tipo) {
             PublicacionTipo::create($tipo);
+        }
+
+        $publicacionEstados = [
+            ['PUES_NOMBRE' => 'PUBLICADO'],
+            ['PUES_NOMBRE' => 'CERRADO'],
+            ['PUES_NOMBRE' => 'CANCELADO'],
+            ['PUES_NOMBRE' => 'BORRADOR'],
+        ];
+        foreach ($publicacionEstados as $estado) {
+            PublicacionEstado::create($estado);
         }
 
         $publicacionEstados = [
@@ -59,5 +70,12 @@ class PublicacionesTableSeeder extends Seeder {
                 $coment->publicacion()->associate( $publicaciones->random() );
                 $coment->save();
         });
-}
+
+
+        Adjunto::create(['ADJU_PATH'=>'Adj_1.jpg', 'PUBL_ID'=>1]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_2.jpg', 'PUBL_ID'=>1]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_3.jpg', 'PUBL_ID'=>1]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_4.jpg', 'PUBL_ID'=>2]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_5.jpg', 'PUBL_ID'=>2]);
+    }
 }

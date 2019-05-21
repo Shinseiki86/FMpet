@@ -4,7 +4,7 @@
 @section('page_heading', 'Nueva Publicación')
 
 @section('section')
-{{ Form::open(['route' => 'Core.publicaciones.store', 'class' => 'form-horizontal']) }}
+{{ Form::open(['route' => 'Core.publicaciones.store', 'class' => 'form-horizontal', 'files' => true ]) }}
 
 	<!-- Elementos del formulario -->
 	@rinclude('form-inputs')

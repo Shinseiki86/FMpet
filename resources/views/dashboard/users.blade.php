@@ -3,10 +3,10 @@
 
 @section('page_heading')
 	<div class="row">
-		<div id="titulo" class="col-xs-8 col-md-6 col-lg-6">
+		<div id="titulo" class="pull-left" style="width: 80%">
 			Bienvenido
 		</div>
-		<div id="btns-top" class="col-xs-4 col-md-6 col-lg-6 text-right">
+		<div id="btns-top" class="text-right" style="width: 0%">
 		</div>
 	</div>
 @endsection

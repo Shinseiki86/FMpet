@@ -3,10 +3,10 @@
 
 @section('page_heading')
 	<div class="row">
-		<div id="titulo" class="col-xs-8 col-md-6 col-lg-6">
+		<div id="titulo" class="pull-left" style="width: 80%">
 			Publicaciones
 		</div>
-		<div id="btns-top" class="col-xs-4 col-md-6 col-lg-6 text-right">
+		<div id="btns-top" class="text-right" style="width: 0%">
 			<a class='btn btn-primary' role='button' href="{{ route('Core.publicaciones.create') }}" data-tooltip="tooltip" title="Crear Nuevo" name="create">
 				<i class="fas fa-plus" aria-hidden="true"></i>
 			</a>
@@ -16,28 +16,42 @@
 
 @section('section')
 
+{{ $publicaciones->links() }}
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-	{{ $publicaciones->links() }}
 	@foreach($publicaciones as $pub)
 
 		@section('pub_'.$pub->PUBL_ID.'_panel_title')
 			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#{{'collapse_pub_'.$pub->PUBL_ID}}" aria-expanded="true" aria-controls="{{'pub_'.$pub->PUBL_ID}}">
-				<div class=" pull-left">
-	      			<span class="small">{{datetime($pub->PUBL_FECHACREADO, true)}}</span> {{$pub->PUBL_TITULO}}
-	      		</div>
-				<div class=" pull-right">
+      			<span class="small">{{datetime($pub->PUBL_FECHACREADO, true)}}</span> {{$pub->PUBL_TITULO}}
+				<span class="hidden-xs hidden-sm pull-right">
 	      			Comentarios <span class="badge">{{$pub->comentarios->count()}}</span>
-	      		</div>
+	      		</span>
 	        </a>
 		@endsection
 
 		@section('pub_'.$pub->PUBL_ID.'_panel_body')
-			<p>{{$pub->PUBL_DESCRIPCION}}</p>
+			<div class="col-xs-12 col-md-8">
+				<p>{{$pub->PUBL_DESCRIPCION}}</p>
+			</div>
+			<div class="col-xs-12 col-md-4">
+				@if($pub->adjuntos->count() > 0)
+					@include('widgets.carousel', [
+						'name'=>'adjuntos_pub_'.$pub->PUBL_ID,
+						'images'=>$pub->adjuntos->pluck('ADJU_PATH')
+							->map(function($path) use($pub){
+								return asset('adjuntos/'.$pub->PUBL_ID.'/'.$path);
+							}),
+						'maxHeight'=>'200px'
+					])
+				@endif
+			</div>
+
 			@foreach($pub->comentarios as $comment)
 				<div class="col-xs-12 ">
 					<div class="panel panel-default">
 						<div class="panel-body">
 							{{$comment->COME_DESCRIPCION}}
+							}
 						</div>
 						<div class="panel-footer"  style="padding-bottom: 25px; padding-top: 3px;">
 							<div class=" pull-left">
@@ -90,7 +104,7 @@
 			</div>
 		@endsection
 
-		<div class="col-xs-12 col-md-6 col-lg-4">
+		<div class="col-xs-12">
 			@include('widgets.panel', [
 				'as'=>'pub_'.$pub->PUBL_ID,
 				'class'=>$pub->publicacionTipo->PUTI_CLASS,
@@ -102,5 +116,5 @@
 
 	@endforeach
 </div>
-	@include('widgets.modals.modal-delete')
+@include('widgets.modals.modal-delete')
 @endsection

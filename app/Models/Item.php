@@ -3,25 +3,25 @@ namespace App\Models;
 
 use App\Models\ModelWithSoftDeletes;
 
-class Publicacion extends ModelWithSoftDeletes
+class Item extends ModelWithSoftDeletes
 {
 	
 	//Nombre de la tabla en la base de datos
-	protected $table = 'PUBLICACIONES';
-	protected $primaryKey = 'PUBL_ID';
-	protected $filterKey = 'PUBL_NUMEROIDENTIFICACION';
+	protected $table = 'ITEMS_PUBLICACIONES_COMENTARIOS';
+	protected $primaryKey = 'ITEM_ID';
+	protected $filterKey = 'ITEM_NUMEROIDENTIFICACION';
 
 	//Traza: Nombre de campos en la tabla para auditoría de cambios
-	const CREATED_AT = 'PUBL_FECHACREADO';
-	const UPDATED_AT = 'PUBL_FECHAMODIFICADO';
-	const DELETED_AT = 'PUBL_FECHAELIMINADO';
-	protected $dates = ['PUBL_FECHACREADO', 'PUBL_FECHAMODIFICADO', 'PUBL_FECHAELIMINADO'];
+	const CREATED_AT = 'ITEM_FECHACREADO';
+	const UPDATED_AT = 'ITEM_FECHAMODIFICADO';
+	const DELETED_AT = 'ITEM_FECHAELIMINADO';
+	protected $dates = ['ITEM_FECHACREADO', 'ITEM_FECHAMODIFICADO', 'ITEM_FECHAELIMINADO'];
 
 	protected $fillable = [
-		'PUBL_TITULO',
-		'PUBL_DESCRIPCION',
-		'PUBL_LATITUD',
-		'PUBL_LONGITUD',
+		'ITEM_TITULO',
+		'ITEM_DESCRIPCION',
+		'ITEM_LATITUD',
+		'ITEM_LONGITUD',
 		'PUES_ID',
 		'PUTI_ID',
 		'PERS_ID',
@@ -31,10 +31,10 @@ class Publicacion extends ModelWithSoftDeletes
 
 	public static function rules($id = 0){
 		return $rules = [
-			'PUBL_TITULO'      => ['required','max:50'],
-			'PUBL_DESCRIPCION' => ['required','max:300'],
-			'PUBL_LATITUD'     => ['required','numeric','between:-90,90'],
-			'PUBL_LONGITUD'    => ['required','numeric','between:-180,180'],
+			'ITEM_TITULO'      => ['required','max:50'],
+			'ITEM_DESCRIPCION' => ['required','max:300'],
+			'ITEM_LATITUD'     => ['required','numeric','between:-90,90'],
+			'ITEM_LONGITUD'    => ['required','numeric','between:-180,180'],
 			'PUES_ID'          => ['required','numeric'],
 			'PUTI_ID'          => ['required','numeric'],
 			'PERS_ID'          => ['required','numeric'],
@@ -70,12 +70,7 @@ class Publicacion extends ModelWithSoftDeletes
 
 	public function comentarios()
 	{
-		return $this->hasMany(Comentario::class, 'PUBL_ID');
-	}
-
-	public function adjuntos()
-	{
-		return $this->hasMany(Adjunto::class, 'PUBL_ID');
+		return $this->hasMany(Comentario::class, 'ITEM_ID');
 	}
 
 }

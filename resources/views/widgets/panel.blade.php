@@ -1,6 +1,6 @@
 <div class="panel panel-{{{ isset($class) ? $class : 'default' }}}">
 	@if( isset($header) )  
-		<div class="panel-heading" role="tab" id='{{$as}}' style="padding-bottom: 25px;">
+		<div class="panel-heading" role="tab" id='{{$as}}'>
 			<h3 class="panel-title">@yield ($as . '_panel_title')
 				@if( isset($controls) )  
 				<div class="panel-control pull-right">
@@ -13,7 +13,7 @@
 		</div>
 	@endif
 
-	@if( isset($collapse))
+	@if( isset($collapse) and $collapse)
 	<div id="collapse_{{$as}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{$as}}">
 	@endif
 		<div class="panel-body">
@@ -22,7 +22,7 @@
 		@if( isset($footer))
 			<div class="panel-footer">@yield ($as . '_panel_footer')</div>
 		@endif
-	@if( isset($collapse))
+	@if( isset($collapse) and $collapse)
 	</div>
 	@endif
 </div>

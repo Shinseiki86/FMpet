@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use DataTables;
 
 use App\Models\Publicacion;
+use App\Models\Adjunto;
 use App\Models\Persona;
 use App\Models\Pais;
 use App\Models\Departamento;
@@ -34,12 +35,14 @@ class PublicacionController extends Controller
 		if($this->routeApi){
 			$attributes = (new $this->class)->getFillable();
 			foreach (request()->all() as $key => $value) {
-				if(in_array('MASC_ID', $attributes))
+				if(in_array($key, $attributes))
 					$query = $query->where('PUBLICACIONES.'.$key, $value);
 			}
+			$limit = request()->get('limit');
+			$query = isset($limit) ? $query->take($limit) : $query->take(10);
 
 			return response()->json([
-				'data'   => $query->get(),
+				'data'   => $query->get(), //->simplePaginate(5)
 				'status' => 'success',
 				'mensaje'=> 'OK'
 			]);
@@ -63,7 +66,7 @@ class PublicacionController extends Controller
 				'barrio:BARR_ID,BARR_NOMBRE',
 				'publicacionEstado:PUES_ID,PUES_NOMBRE',
 				'publicacionTipo:PUTI_ID,PUTI_NOMBRE,PUTI_CLASS',
-				'barrio:BARR_ID,BARR_NOMBRE',
+				'adjuntos:ADJU_ID,ADJU_PATH,PUBL_ID',
 				//'persona:PERS_ID,PERS_NOMBRE,PERS_APELLIDO',
 			])
 			->leftJoin('PERSONAS', 'PERSONAS.PERS_ID', 'PUBLICACIONES.PERS_ID')
@@ -81,7 +84,7 @@ class PublicacionController extends Controller
 				'BARR_ID',
 				'PUBL_CREADOPOR',
 				'PUBL_FECHACREADO',
-			]);
+			])->orderBy('PUBL_ID');
 	}
 
 	/**
@@ -154,6 +157,26 @@ class PublicacionController extends Controller
 		return parent::updateModel($PUBL_ID);
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function postCreateOrUpdate($model)
+	{
+		$files = request()->file('arrAdjuntos');
+		foreach ($files as $file) {
+					
+		    $extension = $file->getClientOriginalExtension();
+		    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
+			$path = public_path('adjuntos/'.$model->PUBL_ID);
+			$filename = 'Adj_'.$adj->ADJU_ID.'.'.$file->getClientOriginalExtension();
+			$file->move($path, $filename);
+		    $adj->update(['ADJU_PATH'=>$filename]);
+		}
+		return $model;
+	}
+
+
 	/**
 	 * Elimina un registro de la base de datos.
 	 *
@@ -207,7 +230,7 @@ class PublicacionController extends Controller
 
 		$arrPaises = model_to_array(Pais::class, 'PAIS_NOMBRE');
 
-		return compact('arrPersonas','arrPubEstados','arrPubTipos','arrMascotas','arrCiudades');
+		return compact('arrPersonas','arrPubEstados','arrPubTipos','arrMascotas','arrPaises');
 	}
 
 }
