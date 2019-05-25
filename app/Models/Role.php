@@ -32,6 +32,7 @@ class Role extends EntrustRole implements AuditableContract
 	const COOROPER	= 5;
 	const EMPLEADO	= 6;
 	const EJECUTIVO	= 7;
+	const USER		= 8;
 
 	public static function rules($id = 0){
 		return [

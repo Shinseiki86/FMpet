@@ -8,6 +8,6 @@
 
 @include('widgets.forms.input', ['type'=>'email', 'column'=>8, 'name'=>'email', 'label'=>'Correo electrónico'])
 
-@include('widgets.forms.input', ['type'=>'select', 'name'=>'roles_ids', 'label'=>'Roles', 'data'=>$arrRoles, 'multiple'=>true,])
+@include('widgets.forms.input', ['type'=>'select', 'name'=>'roles', 'label'=>'Roles', 'data'=>$arrRoles, 'multiple'=>true,])
 
 

@@ -118,6 +118,16 @@ class UsersTableSeeder extends Seeder {
         ]);
         $ejecutivo->attachRole($rolEjecutivo);
 
+        $user = User::create( [
+            'name' => 'Usuario de prueba',
+            'cedula' => 8888888888,
+            'username' => 'USER',
+            'email' => 'empleado@gmail.com',
+            'password'  => \Hash::make($pass),
+            'USER_CREADOPOR'  => 'PRUEBAS'
+        ]);
+        $user->attachRole($rolEmpleado);
+
         //5 usuarios faker
         //$users = factory(App\User::class)->times(5)->create();
 

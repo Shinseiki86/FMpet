@@ -16,43 +16,6 @@ class RoleController extends Controller
 		parent::__construct();
 	}
 
-	/**
-	 * Muestra una lista de los registros.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//Se obtienen todos los registros.
-		$roles = Role::with('permissions')->get();
-		//Se carga la vista y se pasan los registros
-		return view($this->route.'.index', compact('roles'));
-	}
-
-
-	private function getPermissions()
-	{
-		$arrPermGroups = [];
-		foreach( model_to_array(Permission::class, ['name','display_name']) as $i => $value ){
-			$key = explode('-', $value['name']);
-			$arrPermGroups[$key[0]][$i] = $value['display_name'];
-		}
-		return $arrPermGroups;
-	}
-
-
-	/**
-	 * Muestra el formulario para crear un nuevo registro.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//Se crea un array con los Permission disponibles
-		$arrPermGroups = $this->getPermissions();
-		return view($this->route.'.create', compact('arrPermGroups'));
-	}
-
 
 	/**
 	 * Guarda el registro nuevo en la base de datos.

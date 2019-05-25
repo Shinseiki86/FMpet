@@ -15,6 +15,7 @@
 @section('section')
 
 	@include('widgets.charts.panelchart', ['idCanvas' => 'chart1', 'title' => 'Usuarios x Rol' ])
+	@include('widgets.charts.panelchart', ['idCanvas' => 'chart2', 'title' => 'Publicaciones x Fecha' ])
 
 @endsection
 
@@ -24,7 +25,7 @@
 	{!! Html::script('js/chart.js/dashboard.js') !!}
 	<script type="text/javascript">
 		$(function () {
-
+			
 			//función newChart para crear gráfico en los panelchart.
 			newChart(
 				'getDashboardUsuariosPorRol',
@@ -34,10 +35,14 @@
 				'chart1',
 				'bar'
 			);
-
-
-			//Se habilitan selectores para cambiar el tipo de gráfico
-			$('.typeChart').removeClass('disabled');
+			newChart(
+				'getDashboardPublicacionesPorFecha',
+				'Publicaciones x Fecha',
+				'fecha',
+				'count',
+				'chart2',
+				'line'
+			);
 		});
 	</script>
 @endpush

@@ -63,12 +63,13 @@ class User extends Authenticatable implements AuditableContract
     
     public static function rules($id = 0){
         return [
-            'name'      => 'required|max:255',
+            'name'      => ['required','max:255'],
             'cedula'    => ['required','max:15',static::unique($id,'cedula')],
             'email'     => ['required','email','max:320',static::unique($id,'email')],
-            'username'  => $id!=0 ? '' : ['required','max:15',static::unique($id,'username')],
-            'roles_ids' => 'required|array',
-            'password'  => $id!=0 ? '' : 'required|min:6|confirmed',//regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+            'username'  => ['required','max:15',static::unique($id,'username')],
+            'roles'     => ['required','array'],
+            'password'  => $id==0 ? ['required','min:6','confirmed'] : '',
+            //regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
         ];
     }
 

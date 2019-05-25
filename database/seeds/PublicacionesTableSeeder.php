@@ -53,7 +53,7 @@ class PublicacionesTableSeeder extends Seeder {
         $pubTipos = PublicacionTipo::all();
         $pubEstados = PublicacionEstado::all();
 
-        $publicaciones = factory(Publicacion::class)->times(50)->make()
+        $publicaciones = factory(Publicacion::class)->times(1000)->make()
                         ->each(function ($publ) use ($personas,$barrios,$pubTipos,$pubEstados) {
                             $pers = $personas->random();
                             $publ->persona()->associate( $pers );
@@ -65,7 +65,7 @@ class PublicacionesTableSeeder extends Seeder {
 
                         });
 
-        $coments = factory(Comentario::class)->times(500)->make()
+        $coments = factory(Comentario::class)->times(100)->make()
             ->each(function ($coment) use ($publicaciones) {
                 $coment->publicacion()->associate( $publicaciones->random() );
                 $coment->save();

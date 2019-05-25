@@ -4,7 +4,7 @@
 @section('page_heading')
 	<div class="row">
 		<div id="titulo" class="pull-left" style="width: 80%">
-			Bienvenido
+			Bienvenido {{Entrust::user()->name}}
 		</div>
 		<div id="btns-top" class="text-right" style="width: 0%">
 		</div>
@@ -12,5 +12,5 @@
 @endsection
 
 @section('section')
-	Jum...
+
 @endsection

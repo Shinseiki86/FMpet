@@ -95,7 +95,7 @@ class RegisterController extends Controller
         /*return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());*/
 
-        parent::storeModel(['roles'=>'roles_ids']);
+        parent::storeModel();
     }
 
 
@@ -141,7 +141,7 @@ class RegisterController extends Controller
      */
     public function update($usuario)
     {
-        parent::updateModel($usuario, ['roles'=>'roles_ids']);
+        parent::updateModel($usuario);
     }
 
     /**

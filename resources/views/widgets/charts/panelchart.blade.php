@@ -3,9 +3,11 @@
 		<div class="panel-heading">
 			{{$title}}
 			<div class="panel-control pull-right">
-				<select class="typeChart disabled">
+				<select id="type_{{$idCanvas}}" class="typeChart" disabled>
+					<option value="" disabled selected hidden></option>
 					<option value="bar">Barras</option>
 					<option value="pie">Torta</option>
+					<option value="line">Lineas</option>
 				</select>
 				<a class="panelButton"><i class="fas fa-sync-alt"></i></a>
 				<a class="panelButton"><i class="fas fa-times"></i></a>

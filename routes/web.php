@@ -23,15 +23,12 @@ Route::group(['prefix'=>'auth', 'as'=>'auth.', 'namespace'=>'Auth'], function() 
 	Route::resource('permisos', 'PermissionController');
 });
 
-//Dashboard
-Route::get('getDashboardUsuariosPorRol', 'Auth\RoleController@getUsuariosPorRol');
-
 Route::group(['middleware'=>'auth'], function() {
 	//Página principal. Si el usuario es admin, se muestra el dashboard.
 	Route::get('/', function(){
-		if(Entrust::hasRole(['owner','admin','gesthum']))
-			return view('dashboard/charts');
-		return view('layouts.menu');
+		if(Entrust::can('app-dashboard'))
+			return view('welcome/dashboard');
+		return view('welcome/users');
 	});
 	//Ruta para select2 con ajax
 	Route::get('getArrModel', 'Controller@ajax');
@@ -63,6 +60,13 @@ Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report', 'mid
 	Route::post('getData/{controller}/{action}', 'ReportController@getData')->name('getData');
 });
 /*************  Fin Routes del sistema  *************/
+
+//Dashboard
+Route::group(['middleware'=>['auth','permission:app-dashboard']], function() {
+	Route::get('getDashboardUsuariosPorRol', 'Auth\RoleController@getUsuariosPorRol');
+	Route::get('getDashboardPublicacionesPorFecha', 'Core\PublicacionController@getPublicacionesPorFecha');
+});
+
 
 Route::group(['middleware'=>'auth'], function() {
 	Route::group(['prefix'=>'cnfg-geograficos', 'as'=>'CnfgGeograficos.', 'namespace'=>'CnfgGeograficos'], function() {

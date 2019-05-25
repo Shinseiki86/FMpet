@@ -12,6 +12,7 @@ class PermissionsTableSeeder extends Seeder {
     private $rolEjecutivo;
     private $rolSuperOper;
     private $rolCoorOper;
+    private $rolEmpleado;
 
     public function run(){
 
@@ -26,10 +27,10 @@ class PermissionsTableSeeder extends Seeder {
         $this->createPermissions(Ciudad::class, 'ciudades', null, true, false);
         $this->createPermissions(Barrio::class, 'barrios', null, true, false);
         
-        $this->createPermissions(Mascota::class, 'mascotas', null, true, false);
-        $this->createPermissions(Persona::class, 'personas', null, true, false);
-        $this->createPermissions(Publicacion::class, 'publicaciones', null, true, false);
-
+        $permMasc = $this->createPermissions(Mascota::class, 'mascotas', null, true, false);
+        $permPers = $this->createPermissions(Persona::class, 'personas', null, true, false);
+        $permPubl = $this->createPermissions(Publicacion::class, 'publicaciones', null, true, false);
+        $this->rolEmpleado->attachPermissions($permMasc+$permPers+$permPubl);
     }
 
 
@@ -76,9 +77,10 @@ class PermissionsTableSeeder extends Seeder {
         $this->rolOwner = $roles->where('name', 'owner')->first();
         $this->rolAdmin = $roles->where('name', 'admin')->first();
         $this->rolGestHum = $roles->where('name', 'gesthum')->first();
-        $this->Ejecutivo = $roles->where('name', 'ejecutivo')->first();
-        $this->SuperOper = $roles->where('name', 'superoper')->first();
-        $this->CoorOper = $roles->where('name', 'cooroper')->first();
+        $this->rolEjecutivo = $roles->where('name', 'ejecutivo')->first();
+        $this->rolSuperOper = $roles->where('name', 'superoper')->first();
+        $this->rolCoorOper = $roles->where('name', 'cooroper')->first();
+        $this->rolEmpleado = $roles->where('name', 'empleado')->first();
     }
 
 
@@ -98,12 +100,16 @@ class PermissionsTableSeeder extends Seeder {
         ]);
         $parametersg = Permission::create([
             'name'         => 'app-parameterglobal',
-            'display_name' => 'Administrar parámetros generales del Sistema',
+            'display_name' => 'Parámetros generales',
             'description'  => 'Permite crear, eliminar y ordenar los parámetros generales del sistema.',
         ]);
-
+        $dashboard = Permission::create([
+            'name'         => 'app-dashboard',
+            'display_name' => 'Dashboard',
+            'description'  => 'Muestra panel con KPIs y reportes gráficos.',
+        ]);
         $this->rolOwner->attachPermissions([$menu, $parametersg, $uploads]);
-        $this->rolAdmin->attachPermissions([$menu, $parametersg]);
+        $this->rolAdmin->attachPermissions([$menu, $parametersg, $uploads, $dashboard]);
 
         $reports = Permission::create([
             'name'         => 'report-index',
@@ -111,11 +117,11 @@ class PermissionsTableSeeder extends Seeder {
             'description'  => 'Permite ejecutar reportes y exportarlos.',
         ]);
         $this->rolOwner->attachPermission($reports);
-        $this->rolAdmin->attachPermissions([$reports,$uploads]);
+        $this->rolAdmin->attachPermission($reports);
         //$this->rolGestHum->attachPermission($reports);
-        $this->Ejecutivo->attachPermission($reports);
-        $this->SuperOper->attachPermission($reports);
-        $this->CoorOper->attachPermission($reports);
+        $this->rolEjecutivo->attachPermission($reports);
+        $this->rolSuperOper->attachPermission($reports);
+        $this->rolCoorOper->attachPermission($reports);
 
         $this->createPermissions(User::class, 'usuarios', null,  true, false);
         $this->createPermissions(Permission::class, 'permisos', null, true, false);

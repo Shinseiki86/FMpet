@@ -52,6 +52,7 @@ class PublicacionController extends Controller
 		}
 	}
 
+
 	private function buildQuery()
 	{
 		$PERS_NOMBREAPELLIDO = expression_concat([
@@ -236,5 +237,27 @@ class PublicacionController extends Controller
 		return compact('arrPersonas','arrPubEstados','arrPubTipos','arrMascotas','arrPaises');
 	}
 
+
+	/**
+	 * Dashboard: Cantidad de publicaciones por rango de fecha.
+	 *
+	 * @return json
+	 */
+	public function getPublicacionesPorFecha()
+	{
+		$subq = Publicacion::select([\DB::raw('DATE("PUBL_FECHACREADO") as fecha'), 'PUBL_ID'])
+			->where(\DB::raw('DATE("PUBL_FECHACREADO")'), '>=', \Carbon\Carbon::now()->subWeeks(3));
+
+		$data = \DB::table( \DB::raw("({$subq->toSql()}) as subq") )
+			->mergeBindings($subq->getQuery())
+			->select([
+				'fecha', 
+				\DB::raw('COUNT("PUBL_ID") as count')
+			])
+			->groupBy('fecha')
+			->orderBy('fecha');
+
+		return $data->get()->toJson();
+	}
 }
 

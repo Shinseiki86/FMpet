@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group(['prefix'=>'', 'as'=>'api.', 'namespace'=>'Auth'], function() {
+	Route::apiResource('users', 'UserController');
+});
+
 Route::group(['prefix'=>'core', 'as'=>'api.Core.', 'namespace'=>'Core', 'middleware'=>'auth:api'], function() {
 	Route::apiResource('publicaciones', 'PublicacionController', ['parameters'=>['publicacion'=>'PUBL_ID']]);
 });

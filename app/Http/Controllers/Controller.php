@@ -104,7 +104,7 @@ class Controller extends BaseController
 	 * @param  array  $relations
 	 * @return Response
 	 */
-	protected function storeModel(array $relations = [])
+	protected function storeModel()
 	{
 		//Datos recibidos desde la vista.
 		$data = $this->getRequest();
@@ -152,7 +152,7 @@ class Controller extends BaseController
 			} else {
 				return redirect()->back()->withErrors($validator)->withInput()->send();
 			}
-		}		
+		}
 	}
 
 	/**
@@ -182,7 +182,7 @@ class Controller extends BaseController
 
 			//Se crean las relaciones
 			// $this->storeRelations($model, $relations);
-			$this->updateRelations($model, $relations);
+			$this->updateRelations($model, $data);
 			$this->nameClassClass = str_upperspace(class_basename($model));
 			$msg = [$this->nameClassClass.' '.$id.' modificado exitosamente.', 'success'];
 
@@ -233,6 +233,7 @@ class Controller extends BaseController
 	{
 		$exceptions = (isset($this->route) && in_array($this->route, [
 			'app.menu',
+			'auth.usuarios',
 			'auth.roles',
 			'auth.permisos',
 		]));

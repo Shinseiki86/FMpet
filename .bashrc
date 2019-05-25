@@ -5,6 +5,7 @@ alias laravel="git clone -o laravel -b develop https://github.com/laravel/larave
 alias art="php artisan"
 alias art:mig="art migrate"
 alias art:reset="art migrate:reset"
+alias art:ref="php artisan migrate:refresh --seed"
 alias art:fresh="art migrate:fresh --seed"
 alias art:refresh="art migrate:refresh --seed"
 alias art:rollback="art migrate:rollback"
