@@ -42,8 +42,10 @@ class UserController extends Controller
 	{
 		//Datos recibidos desde la vista.
 		$data = $this->getRequest();
+		$data['username'] = $data['email'];
 		$data['roles'] = [Role::EMPLEADO];
-		
+		$data['USER_CREADOPOR'] = 'API';
+
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data);
 
@@ -89,7 +91,8 @@ class UserController extends Controller
 	{
 		//Datos recibidos desde la vista.
 		$data = $this->getRequest();
-		dd($data['roles']);
+		$data['roles'] = [Role::EMPLEADO];
+		$data['USER_MODIFICADOPOR'] = 'API';
 
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data, $id);

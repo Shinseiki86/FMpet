@@ -17,6 +17,11 @@ Route::group(['prefix'=>'', 'as'=>'api.', 'namespace'=>'Auth'], function() {
 	Route::apiResource('users', 'UserController');
 });
 
+Route::group(['as'=>'api.', 'middleware'=>'auth:api'], function() {
+	Route::get('getArrModel', 'Controller@ajax');
+});
+
 Route::group(['prefix'=>'core', 'as'=>'api.Core.', 'namespace'=>'Core', 'middleware'=>'auth:api'], function() {
 	Route::apiResource('publicaciones', 'PublicacionController', ['parameters'=>['publicacion'=>'PUBL_ID']]);
+	Route::apiResource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
 });

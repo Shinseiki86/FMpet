@@ -25,18 +25,29 @@ class MascotaController extends Controller
 	 */
 	public function index()
 	{
-		return view($this->route.'.index');
+		$query = $this->buildQuery();
+		if($this->routeApi){
+			$attributes = (new $this->class)->getFillable();
+			foreach (request()->all() as $key => $value) {
+				if(in_array($key, $attributes))
+					$query = $query->where('MASCOTAS.'.$key, $value);
+			}
+			$limit = request()->get('limit');
+			$query = isset($limit) ? $query->take($limit) : $query->take(10);
+
+			return response()->json([
+				'data'   => $query->get(), //->simplePaginate(5)
+				'status' => 'success',
+				'mensaje'=> 'OK'
+			]);
+		} else {
+			//return view($this->route.'.index');
+			return view($this->route.'.index', ['publicaciones'=>$query->paginate(5)]);
+		}
 	}
 
-	/**
-	 * Retorna json para Datatable.
-	 *
-	 * @return json
-	 */
-	public function getData()
+	private function buildQuery()
 	{
-		$model = new $this->class;
-
 		$PERS_NOMBREAPELLIDO = expression_concat([
 			'PERS_NOMBRE',
 			'PERS_APELLIDO',
@@ -51,6 +62,19 @@ class MascotaController extends Controller
 				$PERS_NOMBREAPELLIDO,
 				'MASC_CREADOPOR',
 			]);
+		return $query;
+	}
+
+	/**
+	 * Retorna json para Datatable.
+	 *
+	 * @return json
+	 */
+	public function getData()
+	{
+		$model = new $this->class;
+
+		$query = $this->buildQuery();
 
 		return Datatables::eloquent($query)
 			->filterColumn('PERS_NOMBREAPELLIDO', function($query, $keyword){
@@ -80,7 +104,7 @@ class MascotaController extends Controller
 	 */
 	public function store()
 	{
-		parent::storeModel();
+		return parent::storeModel();
 	}
 
 
@@ -108,7 +132,7 @@ class MascotaController extends Controller
 	 */
 	public function update($MASC_ID)
 	{
-		parent::updateModel($MASC_ID);
+		return parent::updateModel($MASC_ID);
 	}
 
 	/**
@@ -119,7 +143,7 @@ class MascotaController extends Controller
 	 */
 	public function destroy($MASC_ID)
 	{
-		parent::destroyModel($MASC_ID);
+		return parent::destroyModel($MASC_ID);
 	}
 
 
