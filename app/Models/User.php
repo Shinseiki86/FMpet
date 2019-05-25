@@ -66,7 +66,7 @@ class User extends Authenticatable implements AuditableContract
             'name'      => ['required','max:255'],
             'cedula'    => ['required','max:15',static::unique($id,'cedula')],
             'email'     => ['required','email','max:320',static::unique($id,'email')],
-            'username'  => ['required','max:15',static::unique($id,'username')],
+            'username'  => ['required','max:320',static::unique($id,'username')],
             'roles'     => ['required','array'],
             'password'  => $id==0 ? ['required','min:6','confirmed'] : '',
             //regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -83,6 +83,11 @@ class User extends Authenticatable implements AuditableContract
         return $this->belongsToMany(Role::class);
     }
 
+
+    public function persona()
+    {
+        return $this->hasOne(Persona::class, 'USER_ID');
+    }
 
     /**
      * Perform the actual delete query on this model instance.

@@ -29,6 +29,7 @@ class CreatePersonasTable extends Migration
             $table->string('PERS_DIRECCION', 100)->nullable()->comment('Dirección de residencia');
             $table->string('PERS_CORREO', 320)->nullable()->comment('Correo electrónico');
 
+            $table->unsignedInteger('USER_ID')->nullable()->comment('Llave foranea con users');
             $table->unsignedInteger('PETI_ID')->comment('Llave foranea con PERSONAS_TIPOS');
 
             //Traza
@@ -48,6 +49,9 @@ class CreatePersonasTable extends Migration
             //Relación con tabla PERSONAS_TIPOS
             $table->foreign('PETI_ID')->references('PETI_ID')
                 ->on('PERSONAS_TIPOS')->onDelete('cascade')->onUpdate('cascade');
+            //Relación con tabla users
+            $table->foreign('USER_ID')->references('id')
+                ->on('users')->onDelete('cascade')->onUpdate('cascade');
 
         });
         

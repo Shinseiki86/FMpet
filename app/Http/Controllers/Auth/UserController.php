@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Persona;
 
 class UserController extends Controller
 {
@@ -43,6 +44,7 @@ class UserController extends Controller
 		//Datos recibidos desde la vista.
 		$data = $this->getRequest();
 		$data['username'] = $data['email'];
+		$data['name'] = $data['nombres'].' '.$data['apellidos'];
 		$data['roles'] = [Role::EMPLEADO];
 		$data['USER_CREADOPOR'] = 'API';
 
@@ -126,6 +128,26 @@ class UserController extends Controller
 				'message'=> 'Datos presentan inconsistencias.'
 			]);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function postCreateOrUpdate($model)
+	{
+		Persona::firstOrCreate([
+			'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
+			'PERS_NOMBRE'=>request()->get('nombres'),
+			'PERS_APELLIDO'=>request()->get('apellidos'),
+			'PERS_TELEFONO'=>request()->get('telefono'),
+			'PERS_DIRECCION'=>request()->get('direccion'),
+			'PERS_CORREO'=>$model->email,
+			'PETI_ID'=>1,
+			'PERS_CREADOPOR'=>'API',
+			'USER_ID'=>$model->id,
+		]);
+		$model = $model->load('persona:PERS_ID');
+		return $model;
 	}
 
 	/**

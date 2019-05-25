@@ -26,6 +26,8 @@ class Persona extends ModelWithSoftDeletes
 		'PERS_TELEFONO',
 		'PERS_DIRECCION',
 		'PERS_CORREO',
+		'PETI_ID',
+		'USER_ID',
 	];
 
 	public static function rules($id = 0){
@@ -39,16 +41,19 @@ class Persona extends ModelWithSoftDeletes
 		];
 	}
 
+	public function user()
+	{
+		return $this->hasOne(User::class, 'id');
+	}
+
 	public function personaTipo()
 	{
-		$foreingKey = 'PETI_ID';
-		return $this->belongsTo(PersonaTipo::class, $foreingKey);
+		return $this->belongsTo(PersonaTipo::class, 'PETI_ID');
 	}
 
 	public function mascotas()
 	{
-		$foreingKey = 'PERS_ID';
-		return $this->hasMany(Mascota::class, $foreingKey);
+		return $this->hasMany(Mascota::class, 'PERS_ID');
 	}
 
 
