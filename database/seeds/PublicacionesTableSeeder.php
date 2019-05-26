@@ -65,7 +65,7 @@ class PublicacionesTableSeeder extends Seeder {
 
                         });
 
-        $coments = factory(Comentario::class)->times(100)->make()
+        $coments = factory(Comentario::class)->times(4000)->make()
             ->each(function ($coment) use ($publicaciones) {
                 $coment->publicacion()->associate( $publicaciones->random() );
                 $coment->save();

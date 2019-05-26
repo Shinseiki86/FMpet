@@ -93,6 +93,8 @@ class UserController extends Controller
 	{
 		//Datos recibidos desde la vista.
 		$data = $this->getRequest();
+		$data['username'] = \Auth::user()->username;
+		$data['name'] = $data['nombres'].' '.$data['apellidos'];
 		$data['roles'] = [Role::EMPLEADO];
 		$data['USER_MODIFICADOPOR'] = 'API';
 
@@ -135,18 +137,19 @@ class UserController extends Controller
 	 */
 	protected function postCreateOrUpdate($model)
 	{
+		$data = $this->getRequest();
 		Persona::firstOrCreate([
 			'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
-			'PERS_NOMBRE'=>request()->get('nombres'),
-			'PERS_APELLIDO'=>request()->get('apellidos'),
-			'PERS_TELEFONO'=>request()->get('telefono'),
-			'PERS_DIRECCION'=>request()->get('direccion'),
-			'PERS_CORREO'=>$model->email,
-			'PETI_ID'=>1,
-			'PERS_CREADOPOR'=>'API',
-			'USER_ID'=>$model->id,
+			'PERS_NOMBRE'   => $data['nombres'],
+			'PERS_APELLIDO' => $data['apellidos'],
+			'PERS_TELEFONO' => $data['telefono'],
+			'PERS_DIRECCION'=> $data['direccion'],
+			'PERS_CORREO'   => $model->email,
+			'PETI_ID'       => 1,
+			'PERS_CREADOPOR'=> 'API',
+			'USER_ID'       => $model->id,
 		]);
-		$model = $model->load('persona:PERS_ID');
+		$model = $model->load('persona');
 		return $model;
 	}
 
@@ -159,6 +162,26 @@ class UserController extends Controller
 	public function destroy($id)
 	{
 		return parent::destroyModel($id);
+	}
+
+
+	/**
+	 * 
+	 *
+	 * @param  int  $id
+	 * @return response json
+	 */
+	public function getPersonaUser()
+	{
+		//$pers = Persona::where('USER_ID',$id_user)->first();
+		$pers = \Auth::user();
+
+
+		return response()->json([
+			'data'   => $pers,
+			'status' => 'success',
+			'message'=> 'OK'
+		]);
 	}
 
 }

@@ -15,13 +15,15 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix'=>'', 'as'=>'api.', 'namespace'=>'Auth'], function() {
 	Route::apiResource('users', 'UserController');
+	Route::get('getPersonaUser', 'UserController@getPersonaUser')->name('getPersonaUser');
 });
 
 Route::group(['as'=>'api.', 'middleware'=>'auth:api'], function() {
-	Route::get('getArrModel', 'Controller@ajax');
+	Route::get('getArrModel', 'Controller@ajax')->name('getArrModel');
+	Route::get('getArrModelDepediente', 'Controller@getDataSelectDepediente')->name('getArrModelDepediente');
 });
 
 Route::group(['prefix'=>'core', 'as'=>'api.Core.', 'namespace'=>'Core', 'middleware'=>'auth:api'], function() {
-	Route::apiResource('publicaciones', 'PublicacionController', ['parameters'=>['publicacion'=>'PUBL_ID']]);
-	Route::apiResource('mascotas', 'MascotaController', ['parameters'=>['mascota'=>'MASC_ID']]);
+	Route::apiResource('publicaciones', 'PublicacionController');
+	Route::apiResource('mascotas', 'MascotaController');
 });

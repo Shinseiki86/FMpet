@@ -28,6 +28,7 @@ class Persona extends ModelWithSoftDeletes
 		'PERS_CORREO',
 		'PETI_ID',
 		'USER_ID',
+		'PERS_CREADOPOR',
 	];
 
 	public static function rules($id = 0){

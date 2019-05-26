@@ -18,6 +18,20 @@ class RoleController extends Controller
 
 
 	/**
+	 * Muestra una lista de los registros.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		//Se obtienen todos los registros.
+		$roles = Role::with('permissions')->get();
+		//Se carga la vista y se pasan los registros
+		return view($this->route.'.index', compact('roles'));
+	}
+
+
+	/**
 	 * Guarda el registro nuevo en la base de datos.
 	 *
 	 * @return Response

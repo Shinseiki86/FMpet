@@ -28,9 +28,11 @@ class PermissionsTableSeeder extends Seeder {
         $this->createPermissions(Barrio::class, 'barrios', null, true, false);
         
         $permMasc = $this->createPermissions(Mascota::class, 'mascotas', null, true, false);
+        $this->rolEmpleado->attachPermissions($permMasc);
         $permPers = $this->createPermissions(Persona::class, 'personas', null, true, false);
+        $this->rolEmpleado->attachPermissions($permPers);
         $permPubl = $this->createPermissions(Publicacion::class, 'publicaciones', null, true, false);
-        $this->rolEmpleado->attachPermissions($permMasc+$permPers+$permPubl);
+        $this->rolEmpleado->attachPermissions($permPubl);
     }
 
 

@@ -189,7 +189,7 @@ class Controller extends BaseController
 			// redirecciona al index de controlador
 			if($this->routeApi){
 				return response()->json([
-					'data'   => $data,
+					'data'   => $model,
 					'status' => $msg[1],
 					'message'=> $msg[0]
 				]);
@@ -356,6 +356,7 @@ class Controller extends BaseController
 		// Se obtiene el registro
 		$class = get_model($this->class);
 		$model = $class::findOrFail($id);
+		$data = null;
 
 		$prefix = strtoupper(substr($class::CREATED_AT, 0, 4));
 		$created_by = $prefix.'_CREADOPOR';
@@ -367,18 +368,21 @@ class Controller extends BaseController
 			$msg = [ $nameClass.' '.$id.' no se puede borrar (Creado por SYSTEM).', 'danger' ];
 		} else {
 
-			$relations = $model->relationships('HasMany');
+			$relations = $this->validateRelations($nameClass, $model->relationships('HasMany'));
 
-			if(!$this->validateRelations($nameClass, $relations)){
+			if( empty($relations) ){
 				$model->delete();
 				$msg = [ $nameClass.' '.$id.' eliminado exitosamente.', 'success' ];
+			} else {
+				$msg = [ $nameClass.' '.$id.' presenta relaciones.', 'danger' ];
+				$data = $relations;
 			}
 		}
 
 		// redirecciona al index de controlador
 		if($this->routeApi){
 			return response()->json([
-				'data'   => null,
+				'data'   => $data,
 				'status' => $msg[1],
 				'message'=> $msg[0]
 			]);
@@ -391,29 +395,18 @@ class Controller extends BaseController
 
 	protected function validateRelations($nameClass, $relations)
 	{
-		$hasRelations = false;
 		$strRelations = [];
 
 		foreach ($relations as $relation => $info) {
 			if($info['count']>0){
 				$strRelations[] = $info['count'].' '.$relation;
-				$hasRelations = true;
 			}
 		}
 
-		if(!empty($strRelations)){
-			if($this->routeApi){
-				return response()->json([
-					'data'   => null,
-					'status' => $msg[1],
-					'message'=> $msg[0]
-				]);
-			} else {
-				session()->flash('deleteWithRelations', compact('nameClass','strRelations'));
-			}
+		if(!empty($strRelations) and !$this->routeApi){
+			session()->flash('deleteWithRelations', compact('nameClass','strRelations'));
 		}
-
-		return $hasRelations;
+		return $strRelations;
 	}
 
 	protected function buttonShow($model)
