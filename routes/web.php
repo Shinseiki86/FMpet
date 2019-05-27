@@ -65,6 +65,7 @@ Route::group(['prefix'=>'reports', 'as'=>'reports.', 'namespace'=>'Report', 'mid
 Route::group(['middleware'=>['auth','permission:app-dashboard']], function() {
 	Route::get('getDashboardUsuariosPorRol', 'Auth\RoleController@getUsuariosPorRol');
 	Route::get('getDashboardPublicacionesPorFecha', 'Core\PublicacionController@getPublicacionesPorFecha');
+	Route::get('getDashboardMascotasPorBarrio', 'Core\MascotaController@getMascotasPorBarrio');
 });
 
 
@@ -88,6 +89,7 @@ Route::group(['middleware'=>'auth'], function() {
 			 Route::get('getPersonas', 'PersonaController@getData');
 		Route::resource('publicaciones', 'PublicacionController', ['parameters'=>['publicacione'=>'PUBL_ID']]);
 			 Route::get('getPublicaciones', 'PublicacionController@getData');
+		Route::delete('comentarios/{comentario}', 'ComentarioController@destroy');
 	});
 
 

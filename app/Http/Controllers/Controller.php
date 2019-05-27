@@ -370,7 +370,7 @@ class Controller extends BaseController
 
 			$relations = $this->validateRelations($nameClass, $model->relationships('HasMany'));
 
-			if( empty($relations) ){
+			if( empty($relations) or in_array($nameClass, ['Publicacion','Comentario'] ) ){
 				$model->delete();
 				$msg = [ $nameClass.' '.$id.' eliminado exitosamente.', 'success' ];
 			} else {

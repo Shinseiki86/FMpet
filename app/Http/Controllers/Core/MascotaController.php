@@ -166,5 +166,17 @@ class MascotaController extends Controller
 		return compact('arrPersonas');
 	}
 
+	/**
+	 * Dashboard: Cantidad de mascotas por barrio.
+	 *
+	 * @return json
+	 */
+	public function getMascotasPorBarrio()
+	{
+		$masc = Mascota::join('BARRIOS', 'BARRIOS.BARR_ID', 'MASCOTAS.BARR_ID')
+						;
+
+		return $masc->get()->toJson();
+	}
 }
 

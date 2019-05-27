@@ -44,14 +44,31 @@
 						'maxHeight'=>'200px'
 					])
 				@endif
+				<br>
 			</div>
 
-			@foreach($pub->comentarios as $comment)
+			@foreach($pub->comentarios as $i=>$comment)
 				<div class="col-xs-12 ">
 					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">Comentario {{$i+1}}</h4>
+						</div>
 						<div class="panel-body">
-							{{$comment->COME_DESCRIPCION}}
-							}
+							<div class="col-xs-12 col-md-8">
+								<p>{{$comment->COME_DESCRIPCION}}</p>
+							</div>
+							<div class="col-xs-12 col-md-4">
+								@if($comment->adjuntos->count() > 0)
+									@include('widgets.carousel', [
+										'name'=>'adjuntos_com_'.$comment->COME_ID,
+										'images'=>$comment->adjuntos->pluck('ADJU_PATH')
+											->map(function($path) use($pub){
+												return asset('adjuntos/'.$pub->PUBL_ID.'/'.$path);
+											}),
+										'maxHeight'=>'200px'
+									])
+								@endif
+							</div>
 						</div>
 						<div class="panel-footer"  style="padding-bottom: 25px; padding-top: 3px;">
 							<div class=" pull-left">
@@ -59,13 +76,13 @@
 							</div>
 							<div class=" pull-right">
 								<!-- Botón Editar (edit) -->
-								{{ Html::link( route('Core.publicaciones.edit', $comment->COME_ID),
+								{{-- Html::link( route('Core.publicaciones.edit', $comment->COME_ID),
 									'<i class="fas fa-edit fa-fw" aria-hidden="true"></i>', [
 										'class'=>'btn btn-xs btn-info',
 										'title'=>'Editar',
 										'data-tooltip'=>'tooltip'
 									],null,false)
-								}}
+								--}}
 								<!-- carga botón de borrar -->
 								{{ Form::button('<i class="fas fa-trash" aria-hidden="true"></i>',[
 									'class'=>'btn btn-xs btn-danger btn-delete',
@@ -82,6 +99,7 @@
 							</div>
 						</div>
 					</div>
+					<br>
 				</div>
 			@endforeach
 		@endsection

@@ -71,11 +71,14 @@ class PublicacionesTableSeeder extends Seeder {
                 $coment->save();
         });
 
-
-        Adjunto::create(['ADJU_PATH'=>'Adj_1.jpg', 'PUBL_ID'=>1]);
-        Adjunto::create(['ADJU_PATH'=>'Adj_2.jpg', 'PUBL_ID'=>1]);
-        Adjunto::create(['ADJU_PATH'=>'Adj_3.jpg', 'PUBL_ID'=>1]);
+        $pub = $publicaciones->first();
+        Adjunto::create(['ADJU_PATH'=>'Adj_1.jpg', 'PUBL_ID'=>$pub->PUBL_ID]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_2.jpg', 'PUBL_ID'=>$pub->PUBL_ID]);
+        Adjunto::create(['ADJU_PATH'=>'Adj_3.jpg', 'PUBL_ID'=>$pub->PUBL_ID]);
         Adjunto::create(['ADJU_PATH'=>'Adj_4.jpg', 'PUBL_ID'=>2]);
         Adjunto::create(['ADJU_PATH'=>'Adj_5.jpg', 'PUBL_ID'=>2]);
+
+        $com = $pub->comentarios->first();
+        Adjunto::create(['ADJU_PATH'=>'Adj_6.jpg', 'COME_ID'=>$com->COME_ID]);
     }
 }

@@ -33,6 +33,8 @@ class PermissionsTableSeeder extends Seeder {
         $this->rolEmpleado->attachPermissions($permPers);
         $permPubl = $this->createPermissions(Publicacion::class, 'publicaciones', null, true, false);
         $this->rolEmpleado->attachPermissions($permPubl);
+        $permCom = $this->createPermissions(Comentario::class, 'comentarios', null, true, false);
+        $this->rolEmpleado->attachPermissions($permCom);
     }
 
 

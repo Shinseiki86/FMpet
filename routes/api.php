@@ -25,5 +25,6 @@ Route::group(['as'=>'api.', 'middleware'=>'auth:api'], function() {
 
 Route::group(['prefix'=>'core', 'as'=>'api.Core.', 'namespace'=>'Core', 'middleware'=>'auth:api'], function() {
 	Route::apiResource('publicaciones', 'PublicacionController');
+	Route::apiResource('comentarios', 'ComentarioController');
 	Route::apiResource('mascotas', 'MascotaController');
 });
