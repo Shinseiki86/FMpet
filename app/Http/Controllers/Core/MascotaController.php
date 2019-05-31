@@ -58,8 +58,10 @@ class MascotaController extends Controller
 			->select([
 				'MASC_ID',
 				'MASC_NOMBRE',
+				'MASC_TIPO',
 				'MASC_EDAD',
 				$PERS_NOMBREAPELLIDO,
+				'MASC_DESCRIPCION',
 				'MASC_CREADOPOR',
 			]);
 		return $query;

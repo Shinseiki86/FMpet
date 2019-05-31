@@ -20,6 +20,8 @@ class Mascota extends ModelWithSoftDeletes
 	protected $fillable = [
 		'MASC_NOMBRE',
 		'MASC_EDAD',
+		'MASC_TIPO',
+		'MASC_DESCRIPCION',
 		'PERS_ID',
 	];
 
@@ -27,6 +29,8 @@ class Mascota extends ModelWithSoftDeletes
 		return $rules = [
 			'MASC_NOMBRE' => ['required','max:50'],
 			'MASC_EDAD'   => ['numeric','between:0,255'],
+			'MASC_TIPO'   => ['max:50'],
+			'MASC_DESCRIPCION'=> ['max:300'],
 		];
 	}
 

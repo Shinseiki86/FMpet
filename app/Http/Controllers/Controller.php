@@ -131,15 +131,16 @@ class Controller extends BaseController
 
 			$this->nameClassClass = str_upperspace(class_basename($model));
 
+			$msg = [$this->nameClassClass.' '.$model->getKey().' creado exitosamente.', 'success'];
 			// redirecciona al index de controlador
 			if($this->routeApi){
 				return response()->json([
 					'data'   => $model,
-					'status' => false,
-					'message'=>'OK'
+					'status' => true,
+					'message'=> $msg[0]
 				]);
 			} else {
-				flash_alert( $this->nameClassClass.' '.$model->id.' creado exitosamente.', 'success' );
+				flash_alert( $msg[0], $msg[1] );
 				return redirect()->route($this->route.'.index')->send();
 			}
 		} else {
@@ -147,7 +148,7 @@ class Controller extends BaseController
 				return response()->json([
 					'data'   => $validator->errors(),
 					'status' => false,
-					'message'=>'ERR'
+					'message'=> 'Datos presentan inconsistencias.'
 				]);
 			} else {
 				return redirect()->back()->withErrors($validator)->withInput()->send();
@@ -190,7 +191,7 @@ class Controller extends BaseController
 			if($this->routeApi){
 				return response()->json([
 					'data'   => $model,
-					'status' => $msg[1],
+					'status' => true,
 					'message'=> $msg[0]
 				]);
 			} else {
@@ -201,7 +202,7 @@ class Controller extends BaseController
 			if($this->routeApi){
 				return response()->json([
 					'data'   => $validator->errors(),
-					'status' => 'danger',
+					'status' => false,
 					'message'=> 'Datos presentan inconsistencias.'
 				]);
 			} else {
@@ -383,7 +384,7 @@ class Controller extends BaseController
 		if($this->routeApi){
 			return response()->json([
 				'data'   => $data,
-				'status' => $msg[1],
+				'status' => $msg[1]=='success' ? true : false,
 				'message'=> $msg[0]
 			]);
 		} else {

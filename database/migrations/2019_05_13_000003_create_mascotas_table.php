@@ -24,6 +24,8 @@ class CreateMascotasTable extends Migration
 
             $table->string('MASC_NOMBRE', 50)->comment('Nombres de la macota');
             $table->unsignedTinyInteger('MASC_EDAD')->comment('');
+            $table->string('MASC_TIPO', 50)->nullable()->comment('');
+            $table->string('MASC_DESCRIPCION', 300)->nullable()->comment('');
             $table->unsignedInteger('PERS_ID')->comment('Llave foranea con PERSONAS');
 
             //Traza

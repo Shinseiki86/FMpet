@@ -174,7 +174,7 @@ class UserController extends Controller
 	public function getPersonaUser()
 	{
 		//$pers = Persona::where('USER_ID',$id_user)->first();
-		$pers = \Auth::user();
+		$pers = \Auth::user()->load('persona');
 
 
 		return response()->json([
