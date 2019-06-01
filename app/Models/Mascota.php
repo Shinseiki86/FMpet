@@ -31,7 +31,7 @@ class Mascota extends ModelWithSoftDeletes
 			'MASC_NOMBRE' => ['required','max:50'],
 			'MASC_EDAD'   => ['numeric','between:0,255'],
 			'MASC_TIPO'   => ['max:50'],
-			'MASC_FOTO'   => ['image'],
+			'MASC_FOTO'   => [/*'image'*/],
 			'MASC_DESCRIPCION'=> ['max:300'],
 		];
 	}

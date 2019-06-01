@@ -239,7 +239,10 @@ class Controller extends BaseController
 			'auth.permisos',
 		]));
 
-		$data = request()->all();
+
+		$data = isset($this->requestExcept)
+					? request()->except($this->requestExcept)
+					: request()->all();
 		foreach ($data as $input => $value) {
 			if($value=='')
 				$data[$input] = null;

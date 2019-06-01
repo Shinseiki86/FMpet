@@ -17,7 +17,7 @@ class AlterUsersAvatarTable extends Migration
     {
         echo '- Agregando columna avatar en '.$this->nomTabla.'...' . PHP_EOL;
         Schema::table($this->nomTabla, function (Blueprint $table) {
-            $table->string('avatar', 50)->nullable()
+            $table->string('avatar')->nullable()
                 ->comment('Foto usuario');
         });
 

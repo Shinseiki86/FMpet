@@ -12,6 +12,7 @@ class MascotaController extends Controller
 {
 	protected $route = 'Core.mascotas';
 	protected $class = Mascota::class;
+	protected $requestExcept = ['MASC_FOTO'];
 
 	public function __construct()
 	{
@@ -144,11 +145,18 @@ class MascotaController extends Controller
 	 */
 	protected function postCreateOrUpdate($model)
 	{
-		$file = request()->file('MASC_FOTO');
-		$extension = $file->getClientOriginalExtension();
+		$filename = 'Masc_'.$model->MASC_ID.'.';
 		$path = public_path('mascotas');
-		$filename = 'Masc_'.$model->MASC_ID.'.'.$file->getClientOriginalExtension();
-		$file->move($path, $filename);
+		if(request()->hasFile('MASC_FOTO')){
+			$file = request()->file('MASC_FOTO');
+			$filename = $filename.$file->getClientOriginalExtension();
+			$file->move($path, $filename);
+		} else {
+			$data = explode(',', request()->get('MASC_FOTO'));
+			$file = base64_decode($data[1]);
+			$filename = $filename.'png';
+			\File::put($path.'/'.$filename,  $file);
+		}
 		$model->update(['MASC_FOTO'=>asset('mascotas/'.$filename)]);
 		
 		return $model;

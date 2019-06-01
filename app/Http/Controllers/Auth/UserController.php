@@ -12,6 +12,7 @@ class UserController extends Controller
 {
 	protected $route = 'auth.users';
 	protected $class = User::class;
+	protected $requestExcept = ['avatar'];
 
 	public function __construct()
 	{
@@ -137,15 +138,22 @@ class UserController extends Controller
 	 */
 	protected function postCreateOrUpdate($model)
 	{
-		$data = $this->getRequest();
 
-		$file = $data['avatar'];
-		$extension = $file->getClientOriginalExtension();
+		$filename = 'User_'.$model->id.'.';
 		$path = public_path('avatars');
-		$filename = 'User_'.$model->id.'.'.$file->getClientOriginalExtension();
-		$file->move($path, $filename);
+		if(request()->hasFile('avatar')){
+			$file = request()->file('avatar');
+			$filename = $filename.$file->getClientOriginalExtension();
+			$file->move($path, $filename);
+		} else {
+			$data = explode(',', request()->get('avatar'));
+			$file = base64_decode($data[1]);
+			$filename = $filename.'png';
+			\File::put($path.'/'.$filename,  $file);
+		}
 		$model->update(['avatar'=>asset('avatars/'.$filename)]);
 
+		$data = $this->getRequest();
 		Persona::firstOrCreate([
 			'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
 			'PERS_NOMBRE'   => $data['nombres'],
@@ -157,7 +165,7 @@ class UserController extends Controller
 			'PERS_CREADOPOR'=> 'API',
 			'USER_ID'       => $model->id,
 		]);
-		$model = $model->load('persona');
+		$model = $model->load('persona','roles');
 		return $model;
 	}
 
