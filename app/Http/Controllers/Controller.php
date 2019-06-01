@@ -234,6 +234,7 @@ class Controller extends BaseController
 	{
 		$exceptions = (isset($this->route) && in_array($this->route, [
 			'app.menu',
+			'auth.users',
 			'auth.usuarios',
 			'auth.roles',
 			'auth.permisos',
