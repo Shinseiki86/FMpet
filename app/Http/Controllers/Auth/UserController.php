@@ -70,7 +70,7 @@ class UserController extends Controller
 			// redirecciona al index de controlador
 			return response()->json([
 				'data'   => $model,
-				'status' => false,
+				'status' => true,
 				'message'=>'OK'
 			]);
 		} else {
@@ -120,13 +120,13 @@ class UserController extends Controller
 			// redirecciona al index de controlador
 			return response()->json([
 				'data'   => $data,
-				'status' => $msg[1],
+				'status' => true,
 				'message'=> $msg[0]
 			]);
 		} else {
 			return response()->json([
 				'data'   => $validator->errors(),
-				'status' => 'danger',
+				'status' => false,
 				'message'=> 'Datos presentan inconsistencias.'
 			]);
 		}

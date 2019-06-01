@@ -60,6 +60,7 @@ class MascotaController extends Controller
 				'MASC_NOMBRE',
 				'MASC_TIPO',
 				'MASC_EDAD',
+				'MASC_FOTO',
 				$PERS_NOMBREAPELLIDO,
 				'MASC_DESCRIPCION',
 				'MASC_CREADOPOR',
@@ -135,6 +136,22 @@ class MascotaController extends Controller
 	public function update($MASC_ID)
 	{
 		return parent::updateModel($MASC_ID);
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function postCreateOrUpdate($model)
+	{
+		$file = request()->file('MASC_FOTO');
+		$extension = $file->getClientOriginalExtension();
+		$path = public_path('mascotas');
+		$filename = 'Masc_'.$model->MASC_ID.'.'.$file->getClientOriginalExtension();
+		$file->move($path, $filename);
+		$model->update(['MASC_FOTO'=>asset('mascotas/'.$filename)]);
+		
+		return $model;
 	}
 
 	/**
