@@ -147,17 +147,21 @@ class MascotaController extends Controller
 	{
 		$filename = 'Masc_'.$model->MASC_ID.'.';
 		$path = public_path('mascotas');
-		if(request()->hasFile('MASC_FOTO')){
-			$file = request()->file('MASC_FOTO');
-			$filename = $filename.$file->getClientOriginalExtension();
-			$file->move($path, $filename);
-		} else {
-			$data = explode(',', request()->get('MASC_FOTO'));
-			$file = base64_decode($data[1]);
-			$filename = $filename.'png';
-			\File::put($path.'/'.$filename,  $file);
+		try{
+			if(request()->hasFile('MASC_FOTO')){
+				$file = request()->file('MASC_FOTO');
+				$filename = $filename.$file->getClientOriginalExtension();
+				$putFile = $file->move($path, $filename);
+			} else if(request()->has('MASC_FOTO')) {
+				$data = explode(',', request()->get('MASC_FOTO'));
+				$file = base64_decode($data[1]);
+				$filename = $filename.'png';
+				$putFile = \File::put($path.'/'.$filename,  $file);
+			}
+		} catch(\Exception $e){
 		}
-		$model->update(['MASC_FOTO'=>asset('mascotas/'.$filename)]);
+		if(isset($putFile))
+			$model->update(['MASC_FOTO'=>asset('mascotas/'.$filename)]);
 		
 		return $model;
 	}

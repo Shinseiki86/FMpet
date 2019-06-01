@@ -141,17 +141,21 @@ class UserController extends Controller
 
 		$filename = 'User_'.$model->id.'.';
 		$path = public_path('avatars');
-		if(request()->hasFile('avatar')){
-			$file = request()->file('avatar');
-			$filename = $filename.$file->getClientOriginalExtension();
-			$file->move($path, $filename);
-		} else {
-			$data = explode(',', request()->get('avatar'));
-			$file = base64_decode($data[1]);
-			$filename = $filename.'png';
-			\File::put($path.'/'.$filename,  $file);
+		try{
+			if(request()->hasFile('avatar')){
+				$file = request()->file('avatar');
+				$filename = $filename.$file->getClientOriginalExtension();
+				$putFile = $file->move($path, $filename);
+			} else if(request()->has('avatar')) {
+				$data = explode(',', request()->get('avatar'));
+				$file = base64_decode($data[1]);
+				$filename = $filename.'png';
+				$putFile = \File::put($path.'/'.$filename,  $file);
+			}
+		} catch(\Exception $e){
 		}
-		$model->update(['avatar'=>asset('avatars/'.$filename)]);
+		if(isset($putFile))
+			$model->update(['avatar'=>asset('avatars/'.$filename)]);
 
 		$data = $this->getRequest();
 		Persona::firstOrCreate([
