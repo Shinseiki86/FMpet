@@ -28,6 +28,7 @@ class User extends Authenticatable implements AuditableContract
         'username',
         'cedula',
         'email',
+        'avatar',
         'password',
         'USER_CREADOPOR',
         'USER_MODIFICADOPOR',
@@ -64,6 +65,7 @@ class User extends Authenticatable implements AuditableContract
     public static function rules($id = 0){
         return [
             'name'      => ['required','max:255'],
+            'avatar'    => ['image'],
             'cedula'    => ['required','max:15',static::unique($id,'cedula')],
             'email'     => ['required','email','max:320',static::unique($id,'email')],
             'username'  => ['required','max:320',static::unique($id,'username')],

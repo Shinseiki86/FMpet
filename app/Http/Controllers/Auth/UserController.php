@@ -138,6 +138,14 @@ class UserController extends Controller
 	protected function postCreateOrUpdate($model)
 	{
 		$data = $this->getRequest();
+
+		$file = $data['avatar'];
+		$extension = $file->getClientOriginalExtension();
+		$path = public_path('avatars');
+		$filename = 'User_'.$model->id.'.'.$file->getClientOriginalExtension();
+		$file->move($path, $filename);
+		$model->update(['avatar'=>asset('avatars/'.$filename)]);
+
 		Persona::firstOrCreate([
 			'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
 			'PERS_NOMBRE'   => $data['nombres'],
@@ -179,7 +187,7 @@ class UserController extends Controller
 
 		return response()->json([
 			'data'   => $pers,
-			'status' => 'success',
+			'status' => true,
 			'message'=> 'OK'
 		]);
 	}
