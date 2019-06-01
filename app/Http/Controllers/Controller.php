@@ -256,34 +256,6 @@ class Controller extends BaseController
 		return $data;
 	}
 
-	/**
-	 * Guarda las relaciones entre modelos.
-	 *
-	 * @param  Illuminate\Database\Eloquent\Model $model
-	 * @param  array $relations
-	 * @return void
-	 */
-	private function storeRelations($model, array $relations)
-	{
-		//Datos recibidos desde la vista.
-		$data = request()->all();
-
-		if(!empty($relations)){
-			foreach ($relations as $relation => $ids) {
-				$arrayIds = [];
-				//Si $ids es un string, se refiere al nombre del campo en el form, por ende debe existir en $data
-				if( is_string($ids) and $ids!='' and isset($data[$ids]))
-					$arrayIds =  $data[$ids];
-
-				if( is_array($ids) and !empty($ids) )
-					$arrayIds = $ids;
-
-				$model->$relation()->sync($arrayIds, true);
-			}
-
-		}
-	}
-
 
     public function updateRelations($model, $attributes)
     {

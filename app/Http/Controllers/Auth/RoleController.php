@@ -32,13 +32,25 @@ class RoleController extends Controller
 
 
 	/**
+	 * Muestra el formulario para crear un nuevo registro.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//Se crea un array con los Permission disponibles
+		$arrPermGroups = $this->getPermissions();
+		return view($this->route.'.create', compact('arrPermGroups'));
+	}
+
+	/**
 	 * Guarda el registro nuevo en la base de datos.
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		parent::storeModel(['permissions'=>'permisos_ids']);
+		parent::storeModel();
 	}
 
 
@@ -82,6 +94,16 @@ class RoleController extends Controller
 	public function destroy($id)
 	{
 		parent::destroyModel($id);
+	}
+	
+	private function getPermissions()
+	{
+		$arrPermGroups = [];
+		foreach( model_to_array(Permission::class, ['name','display_name']) as $i => $value ){
+			$key = explode('-', $value['name']);
+			$arrPermGroups[$key[0]][$i] = $value['display_name'];
+		}
+		return $arrPermGroups;
 	}
 	
 	/**
