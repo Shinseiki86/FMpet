@@ -135,6 +135,6 @@ class User extends Authenticatable implements AuditableContract
 
     //Auth from API
     public function findForPassport($username) {
-        return $this->where('username', $username)->first();
+        return $this->where('username', strtolower($username))->first();
     }
 }
