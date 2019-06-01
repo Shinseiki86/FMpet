@@ -165,6 +165,7 @@ class UserController extends Controller
 			'PERS_CREADOPOR'=> 'API',
 			'USER_ID'       => $model->id,
 		]);
+		$model->roles()->sync([Role::EMPLEADO], true);
 		$model = $model->load('persona','roles');
 		return $model;
 	}
