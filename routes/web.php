@@ -30,9 +30,6 @@ Route::group(['middleware'=>'auth'], function() {
 			return view('welcome/dashboard');
 		return view('welcome/users');
 	});
-	//Ruta para select2 con ajax
-	Route::get('getArrModel', 'Controller@ajax');
-	Route::get('getDataSelectDepediente', 'Controller@getDataSelectDepediente');
 	//
 	/*/Idea para reemplazar las rutas de Json Datatable Ajax EN DESARROLLO
 	Route::get('getDatatableJson/{namespace}/{controller}', function($namespace, $controller ){
@@ -41,6 +38,9 @@ Route::group(['middleware'=>'auth'], function() {
 		return $app->callAction('getData', $parameters = request()->all());
 	});*/
 });
+	//Ruta para select2 con ajax
+	Route::get('getArrModel', 'Controller@ajax');
+	Route::get('getDataSelectDepediente', 'Controller@getDataSelectDepediente');
 
 //Admn App
 Route::group(['prefix'=>'app', 'as'=>'app.', 'namespace'=>'App', 'middleware'=>'auth'], function() {

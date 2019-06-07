@@ -20,22 +20,12 @@ class PublicacionesTableSeeder extends Seeder {
 
 
         $publicacionTipos = [
-            ['PUTI_NOMBRE' => 'URGENTE', 'PUTI_CLASS'=>'danger'],
-            ['PUTI_NOMBRE' => 'ALERTA', 'PUTI_CLASS'=>'warning'],
+            ['PUTI_NOMBRE' => 'REPORTE', 'PUTI_CLASS'=>'info'],
+            ['PUTI_NOMBRE' => 'HALLAZGO', 'PUTI_CLASS'=>'success'],
             ['PUTI_NOMBRE' => 'NORMAL', 'PUTI_CLASS'=>'info'],
         ];
         foreach ($publicacionTipos as $tipo) {
             PublicacionTipo::create($tipo);
-        }
-
-        $publicacionEstados = [
-            ['PUES_NOMBRE' => 'PUBLICADO'],
-            ['PUES_NOMBRE' => 'CERRADO'],
-            ['PUES_NOMBRE' => 'CANCELADO'],
-            ['PUES_NOMBRE' => 'BORRADOR'],
-        ];
-        foreach ($publicacionEstados as $estado) {
-            PublicacionEstado::create($estado);
         }
 
         $publicacionEstados = [

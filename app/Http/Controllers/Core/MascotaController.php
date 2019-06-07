@@ -38,7 +38,7 @@ class MascotaController extends Controller
 
 			return response()->json([
 				'data'   => $query->get(), //->simplePaginate(5)
-				'status' => 'success',
+				'status' => true,
 				'mensaje'=> 'OK'
 			]);
 		} else {
@@ -147,7 +147,7 @@ class MascotaController extends Controller
 	{
 		$filename = 'Masc_'.$model->MASC_ID.'.';
 		$path = public_path('mascotas');
-		try{
+		//try{
 			if(request()->hasFile('MASC_FOTO')){
 				$file = request()->file('MASC_FOTO');
 				$filename = $filename.$file->getClientOriginalExtension();
@@ -158,8 +158,8 @@ class MascotaController extends Controller
 				$filename = $filename.'png';
 				$putFile = \File::put($path.'/'.$filename,  $file);
 			}
-		} catch(\Exception $e){
-		}
+		/*} catch(\Exception $e){
+		}*/
 		if(isset($putFile))
 			$model->update(['MASC_FOTO'=>asset('mascotas/'.$filename)]);
 		
