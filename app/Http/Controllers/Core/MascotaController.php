@@ -145,7 +145,7 @@ class MascotaController extends Controller
 	 */
 	protected function postCreateOrUpdate($model)
 	{
-		$filename = 'Masc_'.$model->MASC_ID.'.';
+		$filename = 'Masc_'.$model->MASC_ID.'_'.\Carbon\Carbon::now()->timestamp.'.';
 		$path = public_path('mascotas');
 
 		if(request()->hasFile('MASC_FOTO')){
@@ -159,7 +159,7 @@ class MascotaController extends Controller
 				$file = base64_decode($data[1]);
 				$filename = $filename.'png';
 				if (file_exists($path.'/'.$filename))
-					unlink($path.'/'.$filename);
+					\File::delete($path.'/'.$filename);
 				$putFile = \File::put($path.'/'.$filename,  $file);
 			}
 		}
