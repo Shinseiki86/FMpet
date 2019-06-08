@@ -45,7 +45,7 @@ class ComentarioController extends Controller
 
 	/**
 	 * {@inheritDoc}
-	 */
+	 *
 	protected function postCreateOrUpdate($model)
 	{
 		$files = request()->file('arrAdjuntos');
@@ -61,7 +61,7 @@ class ComentarioController extends Controller
 		}
 		$model->load('adjuntos');
 		return $model;
-	}
+	}*/
 
 
 	/**

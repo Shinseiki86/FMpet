@@ -62,7 +62,7 @@ class UsersTableSeeder extends Seeder {
             'name' => 'Administrador',
             'cedula' => 1,
             'username' => 'admin',
-            'email' => 'sghmasterpromo@gmail.com',
+            'email' => 'admin@mail.com',
             'password'  => \Hash::make($pass),
         ]);
         $admin->attachRole($this->rolAdmin);
@@ -77,47 +77,6 @@ class UsersTableSeeder extends Seeder {
         ]);
         $owner->attachRoles([$this->rolAdmin, $this->rolOwner]);
         
-        //Editores
-        $gesthum1 = User::create( [
-            'name' => 'Gestión humana 1 de prueba',
-            'cedula' => 444444444,
-            'username' => 'gesthum1',
-            'email' => 'kfrodriguez@misena.edu.co',
-            'password'  => \Hash::make($pass),
-            'USER_CREADOPOR'  => 'PRUEBAS'
-        ]);
-        $gesthum1->attachRole($this->rolGestHum);
-
-        $super = User::create( [
-            'name' => 'Supervisor de prueba',
-            'cedula' => 555555555,
-            'username' => 'superoper',
-            'email' => 'coordinadornomin@aseoregional.com',
-            'password'  => \Hash::make($pass),
-            'USER_CREADOPOR'  => 'PRUEBAS'
-        ]);
-        $super->attachRoles([$rolSuperOper, $rolCoorOper, $rolEjecutivo]);
-
-        $coordi = User::create( [
-            'name' => 'Coordinador de prueba',
-            'cedula' => 6666666666,
-            'username' => 'coordi',
-            'email' => 'coordi@outlook.com',
-            'password'  => \Hash::make($pass),
-            'USER_CREADOPOR'  => 'PRUEBAS'
-        ]);
-        $coordi->attachRole($rolCoorOper);
-
-        $ejecutivo = User::create( [
-            'name' => 'Ejecutivo de prueba',
-            'cedula' => 7777777777,
-            'username' => 'ejecutivo',
-            'email' => 'ejecutivo@gmail.com',
-            'password'  => \Hash::make($pass),
-            'USER_CREADOPOR'  => 'PRUEBAS'
-        ]);
-        $ejecutivo->attachRole($rolEjecutivo);
-
         $user = User::create( [
             'name' => 'Usuario de prueba',
             'cedula' => 8888888888,

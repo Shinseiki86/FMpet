@@ -69,6 +69,22 @@ class UserController extends Controller
 
 			$this->nameClassClass = str_upperspace(class_basename($model));
 
+
+
+			Persona::firstOrCreate([
+				'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
+				'PERS_NOMBRE'   => $data['nombres'],
+				'PERS_APELLIDO' => $data['apellidos'],
+				'PERS_TELEFONO' => $data['telefono'],
+				'PERS_DIRECCION'=> $data['direccion'],
+				'PERS_CORREO'   => $model->email,
+				//'PETI_ID'       => 1,
+				'PERS_CREADOPOR'=> 'API',
+				'USER_ID'       => $model->id,
+			]);
+
+
+
 			// redirecciona al index de controlador
 			return response()->json([
 				'data'   => $model,
@@ -122,6 +138,17 @@ class UserController extends Controller
 			$this->nameClassClass = str_upperspace(class_basename($model));
 			$msg = [$this->nameClassClass.' '.$id.' modificado exitosamente.', 'success'];
 
+
+			$pers = Persona::find($model->PERS_ID);
+			$pers->update([
+				'PERS_NOMBRE'   => $data['nombres'],
+				'PERS_APELLIDO' => $data['apellidos'],
+				'PERS_TELEFONO' => $data['telefono'],
+				'PERS_DIRECCION'=> $data['direccion'],
+				//'PERS_CORREO'   => $model->email,
+			]);
+
+
 			// redirecciona al index de controlador
 			return response()->json([
 				'data'   => $model,
@@ -161,18 +188,7 @@ class UserController extends Controller
 		if(isset($putFile))
 			$model->update(['avatar'=>asset('avatars/'.$filename)]);
 
-		$data = $this->getRequest();
-		Persona::firstOrCreate([
-			'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
-			'PERS_NOMBRE'   => $data['nombres'],
-			'PERS_APELLIDO' => $data['apellidos'],
-			'PERS_TELEFONO' => $data['telefono'],
-			'PERS_DIRECCION'=> $data['direccion'],
-			'PERS_CORREO'   => $model->email,
-			'PETI_ID'       => 1,
-			'PERS_CREADOPOR'=> 'API',
-			'USER_ID'       => $model->id,
-		]);
+
 		$model->roles()->sync([Role::EMPLEADO], true);
 		$model = $model->load('persona','roles');
 		return $model;
