@@ -164,29 +164,34 @@ class PublicacionController extends Controller
 	 */
 	protected function postCreateOrUpdate($model)
 	{
+		$path = public_path('adjuntos/'.$model->PUBL_ID);
+
 		if($this->routeApi){
 			$files = request()->get('arrAdjuntos');
 
-			if(count($files) > 0){
-				foreach ($files as $file) {
-				if(request()->has('MASC_FOTO')) {
-					$photo_base64 = request()->get('MASC_FOTO');
+			if(isset($files) and is_array($files) and count($files)>0){
+				foreach ($files as $photo_base64) {
 					if(isset($photo_base64)){
 						$data = explode(',', $photo_base64);
 						$file = base64_decode($data[1]);
-						$filename = $filename.'png';
+
+					    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
+						$filename = 'Adj_'.$adj->ADJU_ID.'.png';
+						if (!file_exists($path))
+							mkdir($path, 0777, true);
 						$putFile = \File::put($path.'/'.$filename,  $file);
+				    	$adj->update(['ADJU_PATH'=>$filename]);
 					}
 				}
+			}
 
 		} else {
 
 			$files = request()->file('arrAdjuntos');
-			if(count($files) > 0){
+			if(isset($files) and is_array($files) and count($files)>0){
 				foreach ($files as $file) {
 				    $extension = $file->getClientOriginalExtension();
 				    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
-					$path = public_path('adjuntos/'.$model->PUBL_ID);
 					$filename = 'Adj_'.$adj->ADJU_ID.'.'.$file->getClientOriginalExtension();
 					$file->move($path, $filename);
 				    $adj->update(['ADJU_PATH'=>$filename]);
