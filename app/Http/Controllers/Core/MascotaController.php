@@ -147,7 +147,7 @@ class MascotaController extends Controller
 	{
 		$filename = 'Masc_'.$model->MASC_ID.'.';
 		$path = public_path('mascotas');
-		
+
 		if(request()->hasFile('MASC_FOTO')){
 			$file = request()->file('MASC_FOTO');
 			$filename = $filename.$file->getClientOriginalExtension();
@@ -158,6 +158,8 @@ class MascotaController extends Controller
 				$data = explode(',', $photo_base64);
 				$file = base64_decode($data[1]);
 				$filename = $filename.'png';
+				if (file_exists($path.'/'.$filename))
+					unlink($path.'/'.$filename);
 				$putFile = \File::put($path.'/'.$filename,  $file);
 			}
 		}

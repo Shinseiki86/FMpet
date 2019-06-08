@@ -61,6 +61,18 @@ class UserController extends Controller
 				$data['password'] = bcrypt($data['password']);
 
 			$model = $this->class::create($data);
+			Persona::firstOrCreate([
+				'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
+				'PERS_NOMBRE'   => $data['nombres'],
+				'PERS_APELLIDO' => $data['apellidos'],
+				'PERS_TELEFONO' => $data['telefono'],
+				'PERS_DIRECCION'=> $data['direccion'],
+				'PERS_CORREO'   => $model->email,
+				'PETI_ID'       => 1, //Tipo Persona Natural
+				'PERS_CREADOPOR'=> 'API',
+				'USER_ID'       => $model->id,
+			]);
+
 			$model = $this->postCreateOrUpdate($model);
 			//$model->save();
 
@@ -69,19 +81,6 @@ class UserController extends Controller
 
 			$this->nameClassClass = str_upperspace(class_basename($model));
 
-
-
-			Persona::firstOrCreate([
-				'PERS_NUMEROIDENTIFICACION'=>$model->cedula,
-				'PERS_NOMBRE'   => $data['nombres'],
-				'PERS_APELLIDO' => $data['apellidos'],
-				'PERS_TELEFONO' => $data['telefono'],
-				'PERS_DIRECCION'=> $data['direccion'],
-				'PERS_CORREO'   => $model->email,
-				//'PETI_ID'       => 1,
-				'PERS_CREADOPOR'=> 'API',
-				'USER_ID'       => $model->id,
-			]);
 
 
 
@@ -140,6 +139,7 @@ class UserController extends Controller
 
 
 			$pers = Persona::find($model->PERS_ID);
+			dd($pers);
 			$pers->update([
 				'PERS_NOMBRE'   => $data['nombres'],
 				'PERS_APELLIDO' => $data['apellidos'],

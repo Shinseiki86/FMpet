@@ -43,7 +43,7 @@ class PublicacionController extends Controller
 
 			return response()->json([
 				'data'   => $query->get(), //->simplePaginate(5)
-				'status' => 'success',
+				'status' => true,
 				'mensaje'=> 'OK'
 			]);
 		} else {
@@ -85,7 +85,7 @@ class PublicacionController extends Controller
 				'BARR_ID',
 				'PUBL_CREADOPOR',
 				'PUBL_FECHACREADO',
-			])->orderBy('PUBL_ID');
+			])->orderByDesc('PUBL_ID');
 	}
 
 	/**
