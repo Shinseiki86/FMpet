@@ -81,9 +81,6 @@ class UserController extends Controller
 
 			$this->nameClassClass = str_upperspace(class_basename($model));
 
-
-
-
 			// redirecciona al index de controlador
 			return response()->json([
 				'data'   => $model,
@@ -115,6 +112,9 @@ class UserController extends Controller
 		$data['roles'] = [Role::EMPLEADO];
 		$data['USER_MODIFICADOPOR'] = 'API';
 
+		if($data['password']=='')
+			unset($data['password']);
+
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data, $id);
 		
@@ -136,10 +136,8 @@ class UserController extends Controller
 			$this->updateRelations($model, $data);
 			$this->nameClassClass = str_upperspace(class_basename($model));
 			$msg = [$this->nameClassClass.' '.$id.' modificado exitosamente.', 'success'];
+			$pers = Persona::where('USER_ID',$model->id)->first();
 
-
-			$pers = Persona::find($model->PERS_ID);
-			dd($pers);
 			$pers->update([
 				'PERS_NOMBRE'   => $data['nombres'],
 				'PERS_APELLIDO' => $data['apellidos'],

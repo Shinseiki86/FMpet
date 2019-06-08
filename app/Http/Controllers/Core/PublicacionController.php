@@ -171,8 +171,8 @@ class PublicacionController extends Controller
 
 			if(isset($files) and is_array($files) and count($files)>0){
 				foreach ($files as $photo_base64) {
-					if(isset($photo_base64)){
-						$data = explode(',', $photo_base64);
+					if(isset($photo_base64['image'])){
+						$data = explode(',', $photo_base64['image']);
 						$file = base64_decode($data[1]);
 
 					    $adj = Adjunto::create(['ADJU_PATH'=>'in proccess','PUBL_ID'=>$model->PUBL_ID]);
