@@ -167,9 +167,8 @@ class PublicacionController extends Controller
 		$path = public_path('adjuntos/'.$model->PUBL_ID);
 
 		if($this->routeApi){
-			$files = request()->get('arrAdjuntos');
-
-			if(isset($files) and is_array($files) and count($files)>0){
+			$files = json_decode(request()->get('arrAdjuntos'), true);
+			if(isset($files)){
 				foreach ($files as $photo_base64) {
 					if(isset($photo_base64['image'])){
 						$data = explode(',', $photo_base64['image']);
@@ -184,9 +183,7 @@ class PublicacionController extends Controller
 					}
 				}
 			}
-
 		} else {
-
 			$files = request()->file('arrAdjuntos');
 			if(isset($files) and is_array($files) and count($files)>0){
 				foreach ($files as $file) {
@@ -198,9 +195,6 @@ class PublicacionController extends Controller
 				}
 			}
 		}
-
-
-
 
 		$model->load('adjuntos');
 		return $model;
