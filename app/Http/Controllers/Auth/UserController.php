@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
+use Validator;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Persona;
@@ -101,9 +102,12 @@ class UserController extends Controller
 
 		//Se valida que los datos recibidos cumplan los requerimientos necesarios.
 		$validator = $this->validateRules($data, $id);
+		
 
 		if($validator->passes()){
 			$class = get_model($this->class);
+			if(array_has($data, 'password'))
+				$data['password'] = bcrypt($data['password']);
 
 			// Se obtiene el registro
 			$model = $class::findOrFail($id);
@@ -120,7 +124,7 @@ class UserController extends Controller
 
 			// redirecciona al index de controlador
 			return response()->json([
-				'data'   => $data,
+				'data'   => $model,
 				'status' => true,
 				'message'=> $msg[0]
 			]);

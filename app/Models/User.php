@@ -66,11 +66,11 @@ class User extends Authenticatable implements AuditableContract
         return [
             'name'      => ['required','max:255'],
             'avatar'    => [/*'image'*/],
-            'cedula'    => ['required','max:15',static::unique($id,'cedula')],
-            'email'     => ['required','email','max:320',static::unique($id,'email')],
-            'username'  => ['required','max:320',static::unique($id,'username')],
+            'cedula'    => $id==0 ? ['required','max:15',static::unique($id,'cedula')] : [],
+            'email'     => $id==0 ? ['required','email','max:320',static::unique($id,'email')] : [],
+            'username'  => $id==0 ? ['required','max:320',static::unique($id,'username')] : [],
             'roles'     => ['required','array'],
-            'password'  => $id==0 ? ['required','min:6','confirmed'] : '',
+            'password'  => $id==0 ? ['required','min:6','confirmed'] : [],
             //regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
         ];
     }
